@@ -6,9 +6,13 @@ import SignalPage from "./pages/SignalPage";
 import ResearchPage from "./pages/ResearchPage";
 import HypoPage from "./pages/HypoPage";
 import DisciplinePage from "./pages/DisciplinePage";
+import ScreenerPage from "./pages/ScreenerPage";
+import TradeJournalPage from "./pages/TradeJournalPage";
+import RoadmapPage from "./pages/RoadmapPage";
+import CostCalcPage from "./pages/CostCalcPage";
 
 export default function App() {
-  const [page, setPage] = useState("signal");
+  const [page, setPage] = useState("roadmap");
 
   // 永続化データ
   const [hypos, setHypos] = useState([]);
@@ -50,10 +54,19 @@ export default function App() {
 
       <Navigation page={page} setPage={setPage} activeHypoCount={activeHypoCount} />
 
+      {page === "screen" && <ScreenerPage />}
       {page === "signal" && <SignalPage />}
       {page === "research" && <ResearchPage onAddHypo={onAddHypo} />}
       {page === "hypo" && <HypoPage hypos={hypos} saveH={saveH} />}
+      {page === "trade" && <TradeJournalPage />}
       {page === "disc" && <DisciplinePage reframes={reframes} saveRF={saveRF} biasChecks={biasChecks} saveBC={saveBC} ips={ips} saveIPS={saveIPS} />}
+      {page === "cost" && <CostCalcPage />}
+      {page === "roadmap" && <RoadmapPage />}
+
+      {/* 全ページ共通の免責事項 */}
+      <div style={{ padding: "12px 16px", marginTop: 16, background: `${C.border}30`, borderRadius: 8, fontSize: 10, color: C.dim, lineHeight: 1.8, textAlign: "center" }}>
+        ⚠️ 本ツールは投資助言ではありません。シミュレーションデータを含みます。投資判断は自己責任で行ってください。
+      </div>
     </div>
   );
 }
