@@ -7,9 +7,18 @@
  * 日足OHLCVデータを取得
  */
 export async function fetchDailyData(symbol) {
-  const res = await fetch(`/api/stock?symbol=${encodeURIComponent(symbol)}`);
-  const json = await res.json();
-  if (!res.ok) throw new Error(json.error || "株価データの取得に失敗しました");
+  const url = `/api/stock?symbol=${encodeURIComponent(symbol)}`;
+  const res = await fetch(url);
+  const text = await res.text();
+
+  let json;
+  try {
+    json = JSON.parse(text);
+  } catch {
+    throw new Error(`APIがJSON以外を返しました（${res.status}）。Vercelのデプロイを確認してください。`);
+  }
+
+  if (!res.ok) throw new Error(json.error || `株価取得失敗 (${res.status})`);
   return json.bars || [];
 }
 
@@ -17,9 +26,19 @@ export async function fetchDailyData(symbol) {
  * 銘柄検索（企業名 or ティッカー）
  */
 export async function searchStocks(query) {
-  const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
-  const json = await res.json();
-  if (!res.ok) throw new Error(json.error || "検索に失敗しました");
+  const url = `/api/search?q=${encodeURIComponent(query)}`;
+  const res = await fetch(url);
+  const text = await res.text();
+
+  // デバッグ: レスポンスがJSONでない場合（HTML等が返っている）
+  let json;
+  try {
+    json = JSON.parse(text);
+  } catch {
+    throw new Error(`APIがJSON以外を返しました（${res.status}）。Vercelのデプロイを確認してください。`);
+  }
+
+  if (!res.ok) throw new Error(json.error || `検索失敗 (${res.status})`);
   return json.results || [];
 }
 
