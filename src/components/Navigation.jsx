@@ -6,14 +6,14 @@ import { F } from "../constants/fonts";
  */
 export default function Navigation({ page, setPage, activeHypoCount }) {
   const tabs = [
-    { key: "roadmap", icon: "🗺️", label: "ガイド" },
+    { key: "roadmap", icon: "🗺️", label: "使い方" },
     { key: "screen", icon: "☀️", label: "銘柄発見" },
-    { key: "signal", icon: "📊", label: "Signal" },
-    { key: "research", icon: "🔬", label: "Research" },
+    { key: "signal", icon: "📊", label: "分析" },
+    { key: "research", icon: "🔬", label: "調査" },
     { key: "hypo", icon: "💡", label: `仮説(${activeHypoCount})` },
     { key: "trade", icon: "💰", label: "売買記録" },
     { key: "disc", icon: "🛡️", label: "規律" },
-    { key: "cost", icon: "🧮", label: "コスト" },
+    { key: "cost", icon: "🧮", label: "費用計算" },
   ];
 
   return (

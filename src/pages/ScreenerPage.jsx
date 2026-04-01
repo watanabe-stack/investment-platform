@@ -18,14 +18,15 @@ const WL_KEY = "watchlist-v1";
 const loadWatchlist = () => { try { return JSON.parse(localStorage.getItem(WL_KEY)) || []; } catch { return []; } };
 const saveWatchlist = (list) => { localStorage.setItem(WL_KEY, JSON.stringify(list)); };
 
-export default function ScreenerPage() {
+export default function ScreenerPage({ cache, setCache }) {
   const [tab, setTab] = useState("screener");
   const [market, setMarket] = useState("日本株");
   const [loading, setLoading] = useState(false);
   const [phase, setPhase] = useState("");
-  const [summary, setSummary] = useState(""); // 結論サマリー
-  const [stocks, setStocks] = useState([]);   // 銘柄リスト
-  const [rawText, setRawText] = useState(""); // フォールバック
+  // キャッシュから復元（ページ遷移しても結果が残る）
+  const [summary, setSummary] = useState(cache?.summary || "");
+  const [stocks, setStocks] = useState(cache?.stocks || []);
+  const [rawText, setRawText] = useState(cache?.rawText || "");
 
   const [watchlist, setWatchlist] = useState(loadWatchlist);
   const [newStock, setNewStock] = useState({ name: "", code: "", market: "JP", reason: "" });
@@ -68,15 +69,16 @@ export default function ScreenerPage() {
       const lines = r.split("\n").filter((l) => l.trim());
 
       // 結論部分を抽出
+      let summaryText = "";
       const conclusionIdx = lines.findIndex((l) => l.includes("今日の結論") || l.includes("結論"));
       const stocksIdx = lines.findIndex((l) => l.includes("注目銘柄") || l.includes("銘柄"));
 
       if (conclusionIdx >= 0 && stocksIdx > conclusionIdx) {
-        setSummary(lines.slice(conclusionIdx + 1, stocksIdx).join("\n").trim());
+        summaryText = lines.slice(conclusionIdx + 1, stocksIdx).join("\n").trim();
       } else {
-        // 最初の2行を結論とみなす
-        setSummary(lines.slice(0, 2).join("\n"));
+        summaryText = lines.slice(0, 2).join("\n");
       }
+      setSummary(summaryText);
 
       // 銘柄部分をパース（番号付きリストを検出）
       const parsed = [];
@@ -110,8 +112,10 @@ export default function ScreenerPage() {
 
       if (parsed.length > 0) {
         setStocks(parsed);
+        setCache?.({ summary: summaryText, stocks: parsed, rawText: "" });
       } else {
         setRawText(r);
+        setCache?.({ summary: summaryText, stocks: [], rawText: r });
       }
     } catch {
       setPhase("");

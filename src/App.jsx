@@ -16,6 +16,8 @@ export default function App() {
 
   // 永続化データ
   const [hypos, setHypos] = useState([]);
+  // スクリーナー結果をApp-levelで保持（ページ遷移しても消えない）
+  const [screenerCache, setScreenerCache] = useState({ summary: "", stocks: [], rawText: "" });
   const [reframes, setReframes] = useState([]);
   const [biasChecks, setBiasChecks] = useState({});
   const [ips, setIps] = useState({ stopLoss: "5", maxPosition: "10", rebalancePeriod: "四半期", moatRule: "", customRules: "" });
@@ -54,7 +56,7 @@ export default function App() {
 
       <Navigation page={page} setPage={setPage} activeHypoCount={activeHypoCount} />
 
-      {page === "screen" && <ScreenerPage />}
+      {page === "screen" && <ScreenerPage cache={screenerCache} setCache={setScreenerCache} />}
       {page === "signal" && <SignalPage />}
       {page === "research" && <ResearchPage onAddHypo={onAddHypo} />}
       {page === "hypo" && <HypoPage hypos={hypos} saveH={saveH} />}
