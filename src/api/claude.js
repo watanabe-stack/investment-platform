@@ -1,32 +1,39 @@
 /**
  * Claude API呼び出し（Vercel Serverless Function経由）
- *
- * ブラウザ → /api/claude → Anthropic API
- * APIキーはサーバー側（Vercel環境変数）に保持され、ブラウザには露出しない
- *
- * 注意: 株価予測・購入推奨は絶対に行わない（法的リスクあり）
+ * レート制限時は自動リトライ（最大2回、30秒間隔）
  */
 export async function askClaude(prompt, sys) {
-  try {
-    const res = await fetch("/api/claude", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        prompt,
-        system: sys || undefined,
-      }),
-    });
+  const maxRetries = 2;
 
-    const data = await res.json();
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      const res = await fetch("/api/claude", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt, system: sys || undefined }),
+      });
 
-    if (!res.ok) {
-      console.error("Claude API error:", data);
-      return `エラー: ${data.error || "APIリクエストに失敗しました"}`;
+      const data = await res.json();
+
+      // レート制限 → 待ってリトライ
+      if (res.status === 429 && attempt < maxRetries) {
+        await new Promise((r) => setTimeout(r, 30000)); // 30秒待機
+        continue;
+      }
+
+      if (!res.ok) {
+        return `エラー: ${data.error || "APIリクエストに失敗しました"}`;
+      }
+
+      return data.text || "取得失敗";
+    } catch (err) {
+      if (attempt < maxRetries) {
+        await new Promise((r) => setTimeout(r, 5000));
+        continue;
+      }
+      return "エラー: ネットワークエラーが発生しました。再試行してください。";
     }
-
-    return data.text || "取得失敗";
-  } catch (err) {
-    console.error("Claude API fetch error:", err);
-    return "エラー: ネットワークエラーが発生しました。再試行してください。";
   }
+
+  return "エラー: リクエストに失敗しました。しばらく待ってから再試行してください。";
 }
