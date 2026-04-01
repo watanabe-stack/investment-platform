@@ -345,6 +345,30 @@ export default function SignalPage() {
         <MiniChart data={tf === "day" ? intra : daily} count={tf === "day" ? 78 : 60} />
       </div>
 
+      {/* チャートパターン検出結果 */}
+      {result.chartPatterns && result.chartPatterns.length > 0 && (
+        <div style={{ ...cardStyle, borderColor: `${C.purple}30` }}>
+          <div style={{ fontSize: F.sm, fontWeight: 700, color: C.purple, marginBottom: 8 }}>📐 検出されたチャートパターン</div>
+          {result.chartPatterns.map((p, i) => (
+            <div key={i} style={{
+              display: "flex", gap: 10, alignItems: "center", padding: "8px 0",
+              borderBottom: i < result.chartPatterns.length - 1 ? `1px solid ${C.border}` : "none",
+            }}>
+              <span style={{
+                fontSize: F.xs, fontWeight: 700, padding: "3px 10px", borderRadius: 6,
+                background: p.signal === "buy" ? `${C.green}15` : p.signal === "sell" ? `${C.red}15` : `${C.orange}15`,
+                color: p.signal === "buy" ? C.green : p.signal === "sell" ? C.red : C.orange,
+              }}>
+                {p.signal === "buy" ? "買い" : p.signal === "sell" ? "売り" : "中立"}
+              </span>
+              <span style={{ fontSize: F.sm, fontWeight: 600, color: C.text }}>{p.nameJa}</span>
+              <span style={{ fontSize: F.xs, color: C.dim, flex: 1 }}>{p.description}</span>
+              <span style={{ fontSize: F.xs, color: C.dim }}>強度{p.strength}/3</span>
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* 指標スコア */}
       <div style={cardStyle}>
         <div style={{ fontSize: F.sm, color: C.dim, marginBottom: 8 }}>

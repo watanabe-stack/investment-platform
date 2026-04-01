@@ -5,6 +5,8 @@ import { calcBollinger } from "../indicators/bollinger";
 import { calcADX } from "../indicators/adx";
 import { calcStoch } from "../indicators/stochastic";
 import { calcVWAP } from "../indicators/vwap";
+import { detectCandlePatterns } from "../indicators/candlePatterns";
+import { detectChartPatterns } from "../indicators/chartPatterns";
 import { TF } from "./timeframes";
 import { detectRegime, getRegimeMultiplier } from "./regime";
 import { C } from "../constants/colors";
@@ -70,7 +72,10 @@ export function scoreAll(tf, daily, intra) {
   const tw = scores.reduce((s, x) => s + x.weight, 0);
   const composite = +(scores.reduce((s, x) => s + x.score * x.weight, 0) / tw).toFixed(1);
 
-  return { scores, composite, regime };
+  // チャートパターン検出（日足のみ）
+  const chartPats = tf !== "day" ? detectChartPatterns(daily, Math.min(60, daily.length)) : [];
+
+  return { scores, composite, regime, chartPatterns: chartPats };
 }
 
 // --- デイトレ指標スコアリング ---
@@ -123,11 +128,23 @@ function scoreDayIndicator(ind, ctx, s, reasons) {
     else { reasons.push(`出来高${r.toFixed(1)}倍（平均的）`); }
   }
   else if (ind.key === "candle") {
-    const body = Math.abs(intra[n].c - intra[n].o);
-    const range = intra[n].h - intra[n].l || 0.001;
-    if (body / range > 0.7 && intra[n].c > intra[n].o) { s = 50; reasons.push("大陽線"); }
-    else if (body / range > 0.7) { s = -50; reasons.push("大陰線"); }
-    else { reasons.push("通常の足型"); }
+    // ローソク足パターン認識ライブラリで検出
+    const patterns = detectCandlePatterns(intra, n);
+    if (patterns.length > 0) {
+      const best = patterns.reduce((a, b) => b.strength > a.strength ? b : a, patterns[0]);
+      const sign = best.signal === "buy" ? 1 : best.signal === "sell" ? -1 : 0;
+      s = sign * best.strength * 25; // strength 1=25, 2=50, 3=75
+      reasons.push(`${best.nameJa}（${best.signal === "buy" ? "買い" : best.signal === "sell" ? "売り" : "中立"}シグナル）`);
+      if (patterns.length > 1) {
+        reasons.push(`他に${patterns.length - 1}つのパターンも検出`);
+      }
+    } else {
+      const body = Math.abs(intra[n].c - intra[n].o);
+      const range = intra[n].h - intra[n].l || 0.001;
+      if (body / range > 0.7 && intra[n].c > intra[n].o) { s = 50; reasons.push("大陽線"); }
+      else if (body / range > 0.7) { s = -50; reasons.push("大陰線"); }
+      else { reasons.push("特筆すべきパターンなし"); }
+    }
   }
 
   return s;
