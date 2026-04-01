@@ -4,7 +4,7 @@ import { F } from "../constants/fonts";
 import { TF } from "../scoring/timeframes";
 import { scoreAll, getVerdict } from "../scoring/engine";
 import { DATASETS, genDaily, genIntraday } from "../data/simulate";
-import { fetchDailyData, getApiKey, setApiKey, getWatchlist, addToWatchlist, removeFromWatchlist } from "../data/api";
+import { fetchDailyData, searchStocks, getWatchlist, addToWatchlist, removeFromWatchlist } from "../data/api";
 import { generateDailyHypothesis, verifyPendingHypotheses, loadAutoHypos } from "../data/autoHypothesis";
 import { VERDICT_PRINCIPLES, REGIME_PRINCIPLES } from "../constants/principles";
 import ScoreBar from "../components/ScoreBar";
@@ -53,7 +53,11 @@ export default function SignalPage() {
   const [realDaily, setRealDaily] = useState(null);
   const [realLoading, setRealLoading] = useState(false);
   const [realError, setRealError] = useState("");
-  const [apiKey, setApiKeyState] = useState(getApiKey());
+
+  // 銘柄検索
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [searching, setSearching] = useState(false);
 
   // 自動仮説
   const [autoHypoMsg, setAutoHypoMsg] = useState("");
@@ -75,11 +79,35 @@ export default function SignalPage() {
     setRealLoading(false);
   };
 
-  const handleAddWatch = () => {
+  const handleSearch = async () => {
+    if (!searchQuery.trim()) return;
+    setSearching(true);
+    try {
+      const results = await searchStocks(searchQuery.trim());
+      setSearchResults(results);
+    } catch (e) {
+      setRealError(e.message);
+      setSearchResults([]);
+    }
+    setSearching(false);
+  };
+
+  const handleAddFromSearch = (item) => {
+    const updated = addToWatchlist(item.symbol, item.name);
+    setWatchlist(updated);
+    setSearchResults([]);
+    setSearchQuery("");
+    // 追加後すぐにデータ取得
+    loadRealData(item.symbol);
+  };
+
+  const handleAddManual = () => {
     if (!newSymbol.trim()) return;
-    const updated = addToWatchlist(newSymbol.trim().toUpperCase(), newName.trim() || newSymbol.trim().toUpperCase());
+    const sym = newSymbol.trim().toUpperCase();
+    const updated = addToWatchlist(sym, newName.trim() || sym);
     setWatchlist(updated);
     setNewSymbol(""); setNewName("");
+    loadRealData(sym);
   };
 
   const handleRemoveWatch = (symbol) => {
@@ -87,8 +115,6 @@ export default function SignalPage() {
     setWatchlist(updated);
     if (selectedSymbol === symbol) { setMode("sim"); setSelectedSymbol(null); setRealDaily(null); }
   };
-
-  const handleSaveApiKey = () => { setApiKey(apiKey); setApiKeyState(apiKey); };
 
   // 全ウォッチリスト銘柄の日次自動仮説生成 + 前日分検証
   const runDailyAutoHypo = async () => {
@@ -153,44 +179,59 @@ export default function SignalPage() {
 
   return (
     <div>
-      {/* ── ウォッチリスト & データソース ── */}
+      {/* ── 銘柄選択 ── */}
       <div style={cardStyle}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-          <div style={{ fontSize: F.h3, fontWeight: 700, color: C.accent }}>📋 銘柄選択</div>
-          <button onClick={() => setShowWatchSettings(!showWatchSettings)}
-            style={{ ...btnStyle(C.dim, false), padding: "6px 12px", fontSize: F.xs }}>
-            ⚙️ 設定
+        <div style={{ fontSize: F.h3, fontWeight: 700, color: C.text, marginBottom: 12 }}>🔍 銘柄を検索して分析</div>
+
+        {/* 検索バー */}
+        <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
+          <input value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="企業名やティッカーで検索（例: トヨタ、AAPL、7203）"
+            style={{ ...inputStyle, flex: 1 }}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()} />
+          <button onClick={handleSearch} disabled={searching}
+            style={{ ...btnStyle(C.accent, true), padding: "12px 20px", whiteSpace: "nowrap" }}>
+            {searching ? "検索中..." : "🔍 検索"}
           </button>
         </div>
 
-        {/* API設定 */}
-        {showWatchSettings && (
-          <div style={{ background: "#f0f2f5", borderRadius: 8, padding: 14, marginBottom: 12 }}>
-            <div style={{ fontSize: F.xs, color: C.dim, marginBottom: 6 }}>
-              Alpha Vantage APIキー（無料: <a href="https://www.alphavantage.co/support/#api-key" target="_blank" rel="noreferrer" style={{ color: C.accent }}>ここで取得</a>）
-            </div>
-            <div style={{ display: "flex", gap: 8 }}>
-              <input value={apiKey} onChange={(e) => setApiKeyState(e.target.value)}
-                placeholder="APIキーを入力" style={{ ...inputStyle, flex: 1, fontSize: F.sm }} type="password" />
-              <button onClick={handleSaveApiKey} style={{ ...btnStyle(C.green, true), padding: "8px 14px" }}>保存</button>
-            </div>
-            <div style={{ fontSize: F.xs, color: C.dim, marginTop: 6, lineHeight: 1.6 }}>
-              無料枠: 25リクエスト/日。日本株は「7203.T」、米国株は「AAPL」形式で登録。
-            </div>
+        {/* 検索結果 */}
+        {searchResults.length > 0 && (
+          <div style={{ background: "#f0f2f5", borderRadius: 8, padding: 12, marginBottom: 12, maxHeight: 200, overflowY: "auto" }}>
+            {searchResults.map((item, i) => (
+              <div key={i} style={{
+                display: "flex", justifyContent: "space-between", alignItems: "center",
+                padding: "10px 8px", borderBottom: i < searchResults.length - 1 ? `1px solid ${C.border}` : "none",
+              }}>
+                <div>
+                  <span style={{ fontSize: F.sm, fontWeight: 600, color: C.text }}>{item.name}</span>
+                  <span style={{ fontSize: F.xs, color: C.dim, marginLeft: 8 }}>{item.symbol}</span>
+                  <span style={{ fontSize: F.label, color: C.dim, marginLeft: 8 }}>{item.region}</span>
+                </div>
+                <button onClick={() => handleAddFromSearch(item)}
+                  style={{ ...btnStyle(C.green, true), padding: "6px 16px", fontSize: F.xs }}>
+                  + 追加して分析
+                </button>
+              </div>
+            ))}
           </div>
         )}
 
-        {/* ウォッチリスト銘柄追加 */}
-        <div style={{ display: "flex", gap: 6, marginBottom: 10, flexWrap: "wrap" }}>
-          <input value={newSymbol} onChange={(e) => setNewSymbol(e.target.value)}
-            placeholder="ティッカー (例: 7203.T)" style={{ ...inputStyle, width: 140, fontSize: F.sm }}
-            onKeyDown={(e) => e.key === "Enter" && handleAddWatch()} />
-          <input value={newName} onChange={(e) => setNewName(e.target.value)}
-            placeholder="表示名 (例: トヨタ)" style={{ ...inputStyle, width: 120, fontSize: F.sm }} />
-          <button onClick={handleAddWatch} style={{ ...btnStyle(C.accent, true), padding: "8px 14px" }}>+ 追加</button>
-        </div>
+        {/* 手動追加（ティッカー直接入力） */}
+        <details style={{ marginBottom: 12 }}>
+          <summary style={{ fontSize: F.xs, color: C.dim, cursor: "pointer" }}>ティッカーを直接入力する場合</summary>
+          <div style={{ display: "flex", gap: 6, marginTop: 8, flexWrap: "wrap" }}>
+            <input value={newSymbol} onChange={(e) => setNewSymbol(e.target.value)}
+              placeholder="例: 7203.T" style={{ ...inputStyle, width: 140, fontSize: F.sm }}
+              onKeyDown={(e) => e.key === "Enter" && handleAddManual()} />
+            <input value={newName} onChange={(e) => setNewName(e.target.value)}
+              placeholder="表示名" style={{ ...inputStyle, width: 120, fontSize: F.sm }} />
+            <button onClick={handleAddManual} style={{ ...btnStyle(C.accent, true), padding: "8px 14px" }}>追加</button>
+          </div>
+        </details>
 
-        {/* 銘柄一覧（シミュレーション + ウォッチリスト） */}
+        {/* 登録済み銘柄 */}
+        <div style={{ fontSize: F.xs, color: C.dim, marginBottom: 6 }}>登録済みの銘柄（クリックで分析）:</div>
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 8 }}>
           {visibleDatasets.map((s) => (
             <div key={`sim-${s.idx}`} style={{ display: "flex", alignItems: "center", gap: 2 }}>
@@ -199,7 +240,7 @@ export default function SignalPage() {
                 🎲 {s.label}
               </button>
               <button onClick={() => hideDefault(s.idx)}
-                style={{ background: "none", border: "none", color: C.dim, cursor: "pointer", fontSize: F.xs, padding: "4px" }}>✕</button>
+                style={{ background: "none", border: "none", color: C.dim, cursor: "pointer", fontSize: 10, padding: "2px" }}>✕</button>
             </div>
           ))}
           {watchlist.map((w) => (
@@ -209,14 +250,11 @@ export default function SignalPage() {
                 📈 {w.name}
               </button>
               <button onClick={() => handleRemoveWatch(w.symbol)}
-                style={{ background: "none", border: "none", color: C.dim, cursor: "pointer", fontSize: F.xs, padding: "4px" }}>✕</button>
+                style={{ background: "none", border: "none", color: C.dim, cursor: "pointer", fontSize: 10, padding: "2px" }}>✕</button>
             </div>
           ))}
           {hiddenDefaults.length > 0 && (
-            <button onClick={showAllDefaults}
-              style={{ ...btnStyle(C.dim, false), padding: "6px 10px", fontSize: F.xs }}>
-              ↩️ デフォルト復元
-            </button>
+            <button onClick={showAllDefaults} style={{ ...btnStyle(C.dim, false), padding: "6px 10px", fontSize: F.xs }}>↩️ 復元</button>
           )}
         </div>
 
