@@ -82,11 +82,14 @@ export default function SignalPage() {
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
     setSearching(true);
+    setRealError("");
+    setSearchResults([]);
     try {
       const results = await searchStocks(searchQuery.trim());
-      setSearchResults(results);
+      setSearchResults(results || []);
+      if (results.length === 0) setRealError("該当する銘柄が見つかりませんでした");
     } catch (e) {
-      setRealError(e.message);
+      setRealError(e.message || "検索エラー");
       setSearchResults([]);
     }
     setSearching(false);
@@ -214,6 +217,20 @@ export default function SignalPage() {
                 </button>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* エラー表示 */}
+        {realError && (
+          <div style={{ background: `${C.red}08`, borderRadius: 8, padding: 12, marginBottom: 12, border: `1px solid ${C.red}20`, fontSize: F.sm, color: C.red }}>
+            ⚠️ {realError}
+          </div>
+        )}
+
+        {/* ローディング表示 */}
+        {realLoading && (
+          <div style={{ background: `${C.accent}08`, borderRadius: 8, padding: 12, marginBottom: 12, fontSize: F.sm, color: C.accent, textAlign: "center" }}>
+            📡 株価データを取得中...
           </div>
         )}
 
