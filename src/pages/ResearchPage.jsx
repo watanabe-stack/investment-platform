@@ -25,6 +25,7 @@ export default function ResearchPage({ onAddHypo }) {
   const [compQ, setCompQ] = useState(""); const [compR, setCompR] = useState("");
   const [showNewH, setShowNewH] = useState(false);
   const [newH, setNewH] = useState({ thesis: "", sector: "", timeframe: "3ヶ月", basis: "" });
+  const [bullR, setBullR] = useState(""); const [bearR, setBearR] = useState("");
 
   const run = async (fn) => { setLoading(true); await fn(); setLoading(false); };
 
@@ -90,11 +91,48 @@ export default function ResearchPage({ onAddHypo }) {
         </div>
       ))}
 
+      {/* Step 7: 敵対的分析（Bull vs Bear） */}
+      {step >= 6 && (
+        <div style={{ ...cardStyle, borderColor: `${C.purple}30`, animation: "fadeIn 0.3s" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10, flexWrap: "wrap", gap: 8 }}>
+            <div style={{ fontSize: F.h3, fontWeight: 700, color: C.purple }}>⚔️ Step 7: 敵対的分析（Bull vs Bear）</div>
+            <button onClick={async () => {
+              if (!compQ) return;
+              setLoading(true);
+              const [bull, bear] = await Promise.all([
+                askClaude(`「${compQ}」を今買うべき最も強い理由を3つ挙げてください。直近1週間のニュース・業績・競合状況から根拠を示してください。弱い理由は不要。最も説得力のある理由だけ。`, "投資リサーチアシスタント。買い側の論拠のみを客観的に提示。投資推奨はしない。"),
+                askClaude(`「${compQ}」を今買うべきでない最も強い理由を3つ挙げてください。直近1週間のニュース・リスク要因・競合の脅威から根拠を示してください。楽観的な見方は不要。最も深刻な懸念だけ。`, "投資リサーチアシスタント。売り側の論拠のみを客観的に提示。投資推奨はしない。"),
+              ]);
+              setBullR(bull); setBearR(bear); setStep(7);
+              setLoading(false);
+            }} disabled={loading || !compQ} style={{ ...btnStyle(C.purple, true), opacity: (loading || !compQ) ? 0.5 : 1 }}>
+              {loading ? <span className="loader">分析中...</span> : "⚔️ Bull vs Bear分析"}
+            </button>
+          </div>
+          <div style={{ fontSize: F.sm, color: C.dim, lineHeight: 2, marginBottom: 10 }}>
+            確証バイアス対策: 「買うべき理由」と「買うべきでない理由」を独立して分析し、両方を見た上で自分で判断する。
+          </div>
+          {(bullR || bearR) && (
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+              <div style={{ flex: 1, minWidth: 250, background: `${C.green}06`, borderRadius: 8, padding: 14, borderLeft: `3px solid ${C.green}` }}>
+                <div style={{ fontSize: F.h3, fontWeight: 700, color: C.green, marginBottom: 8 }}>🟢 Bull（買う理由）</div>
+                <div style={{ fontSize: F.sm, color: "#80c0a0", lineHeight: 2, whiteSpace: "pre-wrap" }}>{bullR || "—"}</div>
+              </div>
+              <div style={{ flex: 1, minWidth: 250, background: `${C.red}06`, borderRadius: 8, padding: 14, borderLeft: `3px solid ${C.red}` }}>
+                <div style={{ fontSize: F.h3, fontWeight: 700, color: C.red, marginBottom: 8 }}>🔴 Bear（買わない理由）</div>
+                <div style={{ fontSize: F.sm, color: "#c08080", lineHeight: 2, whiteSpace: "pre-wrap" }}>{bearR || "—"}</div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Step 8: 仮説を記録 */}
       {step >= 5 && (
         <div style={{ ...cardStyle, borderColor: `${C.orange}30` }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-            <div style={{ fontSize: F.h3, fontWeight: 700, color: C.orange }}>💡 Step 7: 仮説を記録</div>
-            <button onClick={() => { setShowNewH(!showNewH); setStep(6); }} style={btnStyle(C.orange, true)}>仮説を記録</button>
+            <div style={{ fontSize: F.h3, fontWeight: 700, color: C.orange }}>💡 Step 8: 仮説を記録</div>
+            <button onClick={() => { setShowNewH(!showNewH); setStep(Math.max(step, 6)); }} style={btnStyle(C.orange, true)}>仮説を記録</button>
           </div>
           <div style={{ fontSize: F.sm, color: C.dim }}>分析を元に仮説を言語化。後で検証して精度を磨く。</div>
           {showNewH && (

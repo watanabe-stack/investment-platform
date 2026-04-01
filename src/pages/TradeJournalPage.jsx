@@ -36,6 +36,13 @@ const emptyTrade = {
   stockName: "", stockCode: "", market: "JP", entryDate: "", entryPrice: "", exitDate: "", exitPrice: "",
   quantity: "", direction: "買い", commission: "0", tax: String(TAX_RATE), hypothesisId: "",
   entryReason: "", exitReason: "", review: "", emotionAtEntry: "", emotionAtExit: "", followedIPS: "",
+  // 新フィールド（CLAUDE.md粗点1,4対応）
+  myChartReading: "",         // 自分の目でチャートを見た分析（AIを見る前に記入）
+  infoSource: "",             // 情報の出所: "AI検索" | "自分で発見" | "両方"
+  plannedTakeProfit: "",      // 利確ライン
+  plannedStopLoss: "",        // 損切りライン（IPSの値を自動参照）
+  plannedExitCondition: "",   // 条件付きエグジット（モート崩壊、仮説崩壊等）
+  followedExitPlan: "",       // 計画通りに売れたか
 };
 
 export default function TradeJournalPage() {
@@ -197,6 +204,56 @@ export default function TradeJournalPage() {
           </div>
 
           {/* Row 4: Reasons & Emotions */}
+          {/* 自分のチャート分析（AIの判定を見る前に記入） */}
+          <div style={{ background: `${C.cyan}06`, borderRadius: 8, padding: 14, marginBottom: 12, borderLeft: `3px solid ${C.cyan}` }}>
+            <label style={{ fontSize: F.xs, color: C.cyan, fontWeight: 700, display: "block", marginBottom: 4 }}>👁️ 自分の目で見たチャート分析（AI判定を見る前に書く）</label>
+            <textarea value={form.myChartReading} onChange={(e) => updateForm("myChartReading", e.target.value)}
+              placeholder="自分はこのチャートをどう読んだか？ トレンドは？ 支持線は？ 出来高は？" style={{ ...inputStyle, minHeight: 50 }} />
+            <div style={{ fontSize: F.label, color: C.dim, marginTop: 4 }}>💡 AIの判定を先に見るとアンカリングが起きる。自分の分析を先に書いてからSignal Engineを確認しよう</div>
+          </div>
+
+          {/* エグジット計画（エントリー時に事前記録） */}
+          <div style={{ background: `${C.orange}06`, borderRadius: 8, padding: 14, marginBottom: 12, borderLeft: `3px solid ${C.orange}` }}>
+            <div style={{ fontSize: F.xs, color: C.orange, fontWeight: 700, marginBottom: 8 }}>📋 エグジット計画（エントリー前に決める）</div>
+            <div style={{ display: "flex", gap: 10, marginBottom: 8, flexWrap: "wrap" }}>
+              <div style={{ flex: 1, minWidth: 120 }}>
+                <label style={{ fontSize: F.label, color: C.dim, display: "block", marginBottom: 4 }}>利確ライン</label>
+                <input value={form.plannedTakeProfit} onChange={(e) => updateForm("plannedTakeProfit", e.target.value)}
+                  placeholder="例: +15% or 1500円" style={{ ...inputStyle, fontSize: F.sm }} />
+              </div>
+              <div style={{ flex: 1, minWidth: 120 }}>
+                <label style={{ fontSize: F.label, color: C.dim, display: "block", marginBottom: 4 }}>損切りライン</label>
+                <input value={form.plannedStopLoss} onChange={(e) => updateForm("plannedStopLoss", e.target.value)}
+                  placeholder="例: -8% or 900円" style={{ ...inputStyle, fontSize: F.sm }} />
+              </div>
+            </div>
+            <label style={{ fontSize: F.label, color: C.dim, display: "block", marginBottom: 4 }}>条件付きエグジット</label>
+            <input value={form.plannedExitCondition} onChange={(e) => updateForm("plannedExitCondition", e.target.value)}
+              placeholder="例: モート崩壊したら即売却 / 仮説が崩れたら撤退" style={{ ...inputStyle, fontSize: F.sm }} />
+          </div>
+
+          {/* 情報の出所 */}
+          <div style={{ display: "flex", gap: 10, marginBottom: 12, flexWrap: "wrap" }}>
+            <div style={{ flex: 1, minWidth: 120 }}>
+              <label style={{ fontSize: F.xs, color: C.dim, display: "block", marginBottom: 4 }}>情報の出所</label>
+              <select value={form.infoSource} onChange={(e) => updateForm("infoSource", e.target.value)} style={{ ...inputStyle, appearance: "auto" }}>
+                <option value="">選択...</option>
+                <option value="AI検索">AI検索（Screener/Research Lab）</option>
+                <option value="自分で発見">自分で発見（ニュース・IR等）</option>
+                <option value="両方">両方</option>
+              </select>
+            </div>
+            <div style={{ flex: 1, minWidth: 120 }}>
+              <label style={{ fontSize: F.xs, color: C.dim, display: "block", marginBottom: 4 }}>計画通りに売れたか</label>
+              <select value={form.followedExitPlan} onChange={(e) => updateForm("followedExitPlan", e.target.value)} style={{ ...inputStyle, appearance: "auto" }}>
+                <option value="">選択...</option>
+                <option value="はい">はい（計画通り）</option>
+                <option value="いいえ">いいえ（逸脱した）</option>
+                <option value="未決済">未決済</option>
+              </select>
+            </div>
+          </div>
+
           <div style={{ display: "flex", gap: 10, marginBottom: 12, flexWrap: "wrap" }}>
             <div style={{ flex: 1, minWidth: 200 }}>
               <label style={{ fontSize: F.xs, color: C.dim, display: "block", marginBottom: 4 }}>エントリー理由</label>

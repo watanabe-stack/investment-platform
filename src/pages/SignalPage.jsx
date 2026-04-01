@@ -295,6 +295,14 @@ export default function SignalPage() {
         </div>
       </div>
 
+      {/* 未検証警告（バックテスト未実装の段階） */}
+      <div style={{ ...cardStyle, padding: "10px 14px", background: `${C.orange}06`, borderColor: `${C.orange}25` }}>
+        <div style={{ fontSize: F.xs, color: C.orange, lineHeight: 1.8 }}>
+          ⚠️ <strong>このスコアは未検証です。</strong>過去の実データでの収益はまだ計算されていません。参考値としてご利用ください。
+          バックテスト実装後に「✅ 検証済み（収益+○%、N=○件）」が表示されるようになります。
+        </div>
+      </div>
+
       {/* docs原則に基づく行動指針 */}
       {principles && (
         <div style={{ ...cardStyle, borderColor: `${verdict.color}20`, background: `${verdict.color}04` }}>

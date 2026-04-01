@@ -237,8 +237,20 @@ export default function DisciplinePage({ reframes, saveRF, biasChecks, saveBC, i
               placeholder="例: 主力製品の市場シェアが20%以上低下した場合" style={{ ...inputStyle, minHeight: 60 }} />
           </div>
 
+          <div style={{ background: `${C.cyan}08`, borderRadius: 10, padding: 18, marginBottom: 16, borderLeft: `3px solid ${C.cyan}` }}>
+            <div style={{ fontSize: F.h3, fontWeight: 700, color: C.cyan, marginBottom: 12 }}>📌 Clause 5: セクター集中制限</div>
+            <div style={{ fontSize: F.sm, color: C.dim, marginBottom: 8, lineHeight: 2 }}>1セクターへの集中は全体の____% 以内に抑える。集中リスクはバフェット指標で最大の警告サイン。</div>
+            <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+              <span style={{ fontSize: F.base, color: C.text }}>1セクター上限:</span>
+              <input type="number" value={ips.sectorLimit || "35"} onChange={(e) => saveIPS({ ...ips, sectorLimit: e.target.value })}
+                style={{ ...inputStyle, width: 80, textAlign: "center" }} />
+              <span style={{ fontSize: F.base, color: C.text }}>%</span>
+            </div>
+            <div style={{ fontSize: F.xs, color: C.dim, marginTop: 8, lineHeight: 1.8 }}>推奨: 35%以内。S&P500の上位10社が指数の1/3を占める集中は2000年のドットコムバブル以来の異常事態（docs参照）。</div>
+          </div>
+
           <div style={{ background: "#0e1a30", borderRadius: 10, padding: 18, marginBottom: 16 }}>
-            <div style={{ fontSize: F.h3, fontWeight: 700, color: C.text, marginBottom: 12 }}>📌 Clause 5: 自分ルール（自由記述）</div>
+            <div style={{ fontSize: F.h3, fontWeight: 700, color: C.text, marginBottom: 12 }}>📌 Clause 6: 自分ルール（自由記述）</div>
             <div style={{ fontSize: F.sm, color: C.dim, marginBottom: 8, lineHeight: 2 }}>暴落時にやること・やらないこと。冷静な今の自分がパニック時の自分に残す遺言。</div>
             <textarea value={ips.customRules} onChange={(e) => saveIPS({ ...ips, customRules: e.target.value })}
               placeholder={"例:\n・暴落時にTwitter(X)を見ない\n・ナンピンは絶対にしない\n・月1回リフレーミング回診を全銘柄に実施する"} style={{ ...inputStyle, minHeight: 120 }} />
