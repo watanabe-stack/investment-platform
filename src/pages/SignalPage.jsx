@@ -80,14 +80,42 @@ export default function SignalPage() {
   };
 
   const handleSearch = async () => {
-    if (!searchQuery.trim()) return;
+    const q = searchQuery.trim();
+    if (!q) return;
     setSearching(true);
     setRealError("");
     setSearchResults([]);
     try {
-      const results = await searchStocks(searchQuery.trim());
-      setSearchResults(results || []);
-      if (results.length === 0) setRealError("該当する銘柄が見つかりませんでした");
+      // 日本株の4桁コードが入力された場合、".T"を自動付与してティッカーとしても検索
+      const isJpCode = /^\d{4}$/.test(q);
+      const results = await searchStocks(q);
+
+      // 日本株コードの場合、直接追加オプションを先頭に表示
+      const augmented = [...(results || [])];
+      if (isJpCode) {
+        augmented.unshift({
+          symbol: `${q}.T`,
+          name: `東証 ${q}（直接追加）`,
+          type: "Equity",
+          region: "Tokyo",
+          currency: "JPY",
+          isDirect: true,
+        });
+      }
+      // ".T"付きティッカーが入力された場合も直接追加オプション
+      if (/^\d{4}\.T$/i.test(q)) {
+        augmented.unshift({
+          symbol: q.toUpperCase(),
+          name: `東証 ${q.toUpperCase()}（直接追加）`,
+          type: "Equity",
+          region: "Tokyo",
+          currency: "JPY",
+          isDirect: true,
+        });
+      }
+
+      setSearchResults(augmented);
+      if (augmented.length === 0) setRealError("該当する銘柄が見つかりませんでした。日本株は4桁コード（例: 7203）で検索できます。");
     } catch (e) {
       setRealError(e.message || "検索エラー");
       setSearchResults([]);
@@ -189,7 +217,7 @@ export default function SignalPage() {
         {/* 検索バー */}
         <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
           <input value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="企業名やティッカーで検索（例: トヨタ、AAPL、7203）"
+            placeholder="企業名 or ティッカー（例: Apple、AAPL、7203、トヨタ）"
             style={{ ...inputStyle, flex: 1 }}
             onKeyDown={(e) => e.key === "Enter" && handleSearch()} />
           <button onClick={handleSearch} disabled={searching}
