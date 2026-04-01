@@ -270,11 +270,11 @@ export default function RoadmapPage() {
               </div>
               <div style={{ marginBottom: 8 }}>
                 <div style={{ fontSize: F.xs, color: C.green, fontWeight: 600, marginBottom: 2 }}>使い方</div>
-                <div style={{ fontSize: F.sm, color: "#8ab0cc", lineHeight: 1.8 }}>{item.how}</div>
+                <div style={{ fontSize: F.sm, color: "#4a6070", lineHeight: 1.8 }}>{item.how}</div>
               </div>
               <div style={{ background: `${C.orange}08`, borderRadius: 6, padding: "8px 12px" }}>
                 <div style={{ fontSize: F.xs, color: C.orange, fontWeight: 600, marginBottom: 2 }}>⚠️ 注意</div>
-                <div style={{ fontSize: F.xs, color: "#9a8060", lineHeight: 1.8 }}>{item.warn}</div>
+                <div style={{ fontSize: F.xs, color: "#8a7040", lineHeight: 1.8 }}>{item.warn}</div>
               </div>
             </div>
           ))}
@@ -282,11 +282,11 @@ export default function RoadmapPage() {
           {/* AI設定の案内 */}
           <div style={{ ...cardStyle, borderColor: `${C.red}30`, background: `${C.red}04` }}>
             <div style={{ fontSize: F.h3, fontWeight: 700, color: C.red, marginBottom: 8 }}>🔑 AI機能を使うには（管理者向け）</div>
-            <div style={{ fontSize: F.sm, color: "#c08080", lineHeight: 2 }}>
+            <div style={{ fontSize: F.sm, color: "#a03030", lineHeight: 2 }}>
               Morning Screener・Research Lab・仮説AI検証にはClaude APIが必要です。<br />
               <strong style={{ color: C.text }}>設定方法:</strong><br />
               1. <a href="https://console.anthropic.com/" target="_blank" rel="noreferrer" style={{ color: C.accent }}>Anthropic Console</a> でAPIキーを取得<br />
-              2. Vercelのプロジェクト設定 → Environment Variables → <code style={{ background: "#0e1a30", padding: "2px 6px", borderRadius: 4 }}>ANTHROPIC_API_KEY</code> を追加<br />
+              2. Vercelのプロジェクト設定 → Environment Variables → <code style={{ background: "#f0f2f5", padding: "2px 6px", borderRadius: 4 }}>ANTHROPIC_API_KEY</code> を追加<br />
               3. Vercelを再デプロイ<br />
               <br />
               APIキーがなくても、Signal Engine（テクニカル分析）、規律ツール、トレードジャーナルなどAIを使わない機能は全て動作します。
@@ -295,7 +295,7 @@ export default function RoadmapPage() {
 
           <div style={{ ...cardStyle, background: `${C.cyan}06`, borderColor: `${C.cyan}20` }}>
             <div style={{ fontSize: F.h3, fontWeight: 700, color: C.cyan, marginBottom: 8 }}>📚 このシステムの設計思想</div>
-            <div style={{ fontSize: F.sm, color: "#80b8c8", lineHeight: 2 }}>
+            <div style={{ fontSize: F.sm, color: "#3a7080", lineHeight: 2 }}>
               8つの投資資料から抽出した6つの核心原則に基づいて設計されています：<br /><br />
               <strong>① 期待リターン10.4%</strong> — 75年平均が現実。28.2%は幻想<br />
               <strong>② プロスペクト理論</strong> — 損失の痛みは利益の2倍。仕組みで対処する<br />
@@ -328,7 +328,7 @@ export default function RoadmapPage() {
         </div>
 
         {/* Progress Bar */}
-        <div style={{ width: "100%", height: 10, background: "#0e1a30", borderRadius: 5, overflow: "hidden" }}>
+        <div style={{ width: "100%", height: 10, background: "#f0f2f5", borderRadius: 5, overflow: "hidden" }}>
           <div style={{
             width: `${progressPct}%`, height: "100%",
             background: allDone ? C.green : `linear-gradient(90deg, ${C.accent}, ${C.cyan})`,
@@ -404,7 +404,7 @@ export default function RoadmapPage() {
                 <div style={{ fontSize: F.sm, color: C.dim, lineHeight: 1.8, marginBottom: 10 }}>{step.desc}</div>
 
                 {/* Action Items */}
-                <div style={{ background: "#0e1a30", borderRadius: 8, padding: 14 }}>
+                <div style={{ background: "#f0f2f5", borderRadius: 8, padding: 14 }}>
                   <div style={{ fontSize: F.xs, color: C.dim, marginBottom: 8, fontWeight: 600 }}>やること:</div>
                   {step.actions.map((action, j) => (
                     <div key={j} style={{ display: "flex", gap: 8, alignItems: "flex-start", padding: "4px 0", fontSize: F.sm, color: isCompleted ? C.dim : C.text, lineHeight: 1.8 }}>
@@ -423,7 +423,7 @@ export default function RoadmapPage() {
 
       {/* 注意書き */}
       <div style={{ padding: 10, background: `${C.orange}05`, borderRadius: 8, border: `1px solid ${C.orange}12`, marginTop: 8 }}>
-        <p style={{ fontSize: F.xs, color: "#7a6a4a", lineHeight: 1.8 }}>⚠️ このロードマップは投資の学習補助ツールです。投資助言ではありません。投資は自己責任で行ってください。</p>
+        <p style={{ fontSize: F.xs, color: "#8a7a5a", lineHeight: 1.8 }}>⚠️ このロードマップは投資の学習補助ツールです。投資助言ではありません。投資は自己責任で行ってください。</p>
       </div>
       </div>)}
     </div>

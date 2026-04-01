@@ -9,7 +9,7 @@ const btnStyle = (color, active) => ({
   fontSize: F.sm, fontFamily: "inherit", fontWeight: 600, transition: "all 0.15s",
 });
 const inputStyle = {
-  background: "#0e1a30", border: `1.5px solid ${C.border}`, color: C.text,
+  background: "#f0f2f5", border: `1.5px solid ${C.border}`, color: C.text,
   padding: "10px 14px", borderRadius: 8, fontSize: F.base, fontFamily: "inherit", width: "100%", outline: "none",
 };
 
@@ -173,7 +173,7 @@ export default function CostCalcPage() {
             {parseFloat(result.evPostTax) <= 0 && (
               <div style={{ background: `${C.red}08`, borderRadius: 8, padding: 14, borderLeft: `3px solid ${C.red}` }}>
                 <div style={{ fontSize: F.h3, fontWeight: 700, color: C.red, marginBottom: 4 }}>🚫 コスト込みで期待値がマイナスです</div>
-                <div style={{ fontSize: F.sm, color: "#c08080", lineHeight: 1.8 }}>
+                <div style={{ fontSize: F.sm, color: "#a03030", lineHeight: 1.8 }}>
                   手数料と税金を考慮すると、この戦略では資産が減少します。勝率を上げるか、手数料の安い証券会社に変更するか、取引頻度を減らしてください。
                 </div>
               </div>
@@ -216,7 +216,7 @@ export default function CostCalcPage() {
 
             {/* Difference */}
             {parseFloat(result.kellyPreTax) > 0 && (
-              <div style={{ background: "#0e1a30", borderRadius: 8, padding: 14, textAlign: "center" }}>
+              <div style={{ background: "#f0f2f5", borderRadius: 8, padding: 14, textAlign: "center" }}>
                 <div style={{ fontSize: F.sm, color: C.dim, marginBottom: 4 }}>コストによるケリー基準の低下</div>
                 <div style={{ fontSize: F.h2, fontWeight: 700, color: C.orange }}>
                   -{(parseFloat(result.kellyPreTax) - parseFloat(result.kellyPostTax)).toFixed(1)}%ポイント
@@ -249,7 +249,7 @@ export default function CostCalcPage() {
             {parseFloat(result.annualCommissionPct) > 2 && (
               <div style={{ background: `${C.red}08`, borderRadius: 8, padding: 14, borderLeft: `3px solid ${C.red}` }}>
                 <div style={{ fontSize: F.sm, color: C.red, fontWeight: 700, marginBottom: 4 }}>⚠️ 手数料が年間資産の2%以上を消費しています</div>
-                <div style={{ fontSize: F.sm, color: "#c08080", lineHeight: 1.8 }}>
+                <div style={{ fontSize: F.sm, color: "#a03030", lineHeight: 1.8 }}>
                   取引頻度を下げるか、手数料率の低い証券会社への切り替えを検討してください。
                 </div>
               </div>
@@ -259,7 +259,7 @@ export default function CostCalcPage() {
           {/* Formula */}
           <div style={cardStyle}>
             <div style={{ fontSize: F.h3, fontWeight: 700, color: C.dim, marginBottom: 10 }}>📐 計算の仕組み</div>
-            <div style={{ background: "#0e1a30", borderRadius: 8, padding: 16, fontSize: F.sm, color: C.text, lineHeight: 2.2, fontFamily: "'JetBrains Mono',monospace" }}>
+            <div style={{ background: "#f0f2f5", borderRadius: 8, padding: 16, fontSize: F.sm, color: C.text, lineHeight: 2.2, fontFamily: "'JetBrains Mono',monospace" }}>
               <span style={{ color: C.dim }}>// 1取引あたりの期待値</span><br />
               EV = p×w - (1-p)×l = {result.evPreTax}%<br /><br />
               <span style={{ color: C.dim }}>// 手数料控除（往復）</span><br />
@@ -275,7 +275,7 @@ export default function CostCalcPage() {
           {/* Advice */}
           <div style={{ ...cardStyle, background: `${C.cyan}06`, borderColor: `${C.cyan}20` }}>
             <div style={{ fontSize: F.h3, fontWeight: 700, color: C.cyan, marginBottom: 8 }}>💡 コスト意識のポイント</div>
-            <div style={{ fontSize: F.sm, color: "#80b8c8", lineHeight: 2 }}>
+            <div style={{ fontSize: F.sm, color: "#3a7080", lineHeight: 2 }}>
               ・<strong>手数料</strong>は「確実に発生するマイナスリターン」。取引頻度が高いほど影響大<br />
               ・<strong>税金</strong>は利益の約20%を持っていく。NISA口座の活用で非課税にできる<br />
               ・<strong>日1回トレード</strong>だと年252回。手数料0.1%でも往復0.2%×252=年間50.4%が手数料に消える<br />
@@ -287,7 +287,7 @@ export default function CostCalcPage() {
       )}
 
       <div style={{ padding: 10, background: `${C.orange}05`, borderRadius: 8, border: `1px solid ${C.orange}12`, marginTop: 8 }}>
-        <p style={{ fontSize: F.xs, color: "#7a6a4a", lineHeight: 1.8 }}>⚠️ 計算結果は理論上の数値です。実際のリターンは市場環境・銘柄選定・タイミング等で大きく変動します。投資助言ではありません。</p>
+        <p style={{ fontSize: F.xs, color: "#8a7a5a", lineHeight: 1.8 }}>⚠️ 計算結果は理論上の数値です。実際のリターンは市場環境・銘柄選定・タイミング等で大きく変動します。投資助言ではありません。</p>
       </div>
     </div>
   );

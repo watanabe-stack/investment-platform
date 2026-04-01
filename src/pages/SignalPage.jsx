@@ -17,7 +17,7 @@ const btnStyle = (color, active) => ({
   fontSize: F.sm, fontFamily: "inherit", fontWeight: 600, transition: "all 0.15s",
 });
 const inputStyle = {
-  background: "#0e1a30", border: `1.5px solid ${C.border}`, color: C.text,
+  background: "#f0f2f5", border: `1.5px solid ${C.border}`, color: C.text,
   padding: "10px 14px", borderRadius: 8, fontSize: F.base, fontFamily: "inherit", width: "100%", outline: "none",
 };
 
@@ -165,7 +165,7 @@ export default function SignalPage() {
 
         {/* API設定 */}
         {showWatchSettings && (
-          <div style={{ background: "#0e1a30", borderRadius: 8, padding: 14, marginBottom: 12 }}>
+          <div style={{ background: "#f0f2f5", borderRadius: 8, padding: 14, marginBottom: 12 }}>
             <div style={{ fontSize: F.xs, color: C.dim, marginBottom: 6 }}>
               Alpha Vantage APIキー（無料: <a href="https://www.alphavantage.co/support/#api-key" target="_blank" rel="noreferrer" style={{ color: C.accent }}>ここで取得</a>）
             </div>
@@ -264,7 +264,7 @@ export default function SignalPage() {
           background: result.regime.regime.includes("up") ? `${C.green}06` : result.regime.regime.includes("down") ? `${C.red}06` : `${C.orange}06`,
           borderColor: result.regime.regime.includes("up") ? `${C.green}25` : result.regime.regime.includes("down") ? `${C.red}25` : `${C.orange}25`,
         }}>
-          <span style={{ fontSize: F.sm, color: "#8ab0cc" }}>🔍 <strong>相場局面：</strong>{result.regime.desc}</span>
+          <span style={{ fontSize: F.sm, color: "#4a6070" }}>🔍 <strong>相場局面：</strong>{result.regime.desc}</span>
           {regimePrinciple && (
             <div style={{ fontSize: F.xs, color: C.dim, marginTop: 6, lineHeight: 1.8 }}>
               💡 {regimePrinciple.warning}
@@ -288,7 +288,7 @@ export default function SignalPage() {
           <div style={{ fontSize: 52, fontWeight: 300, color: verdict.color, margin: "8px 0" }}>
             {result.composite > 0 ? "+" : ""}{result.composite}
           </div>
-          <div style={{ display: "flex", justifyContent: "center", gap: 24, fontSize: F.sm, color: "#7090a8", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", justifyContent: "center", gap: 24, fontSize: F.sm, color: "#5a6a78", flexWrap: "wrap" }}>
             <span>信頼度 <strong style={{ color: confCol }}>{conf}</strong> ({agree}/{total}指標一致)</span>
             <span style={{ color: tfConf.color }}>{tfConf.icon} {tfConf.label}</span>
           </div>
@@ -310,7 +310,7 @@ export default function SignalPage() {
             📖 {principles.action}
           </div>
           {principles.warnings.map((w, i) => (
-            <div key={i} style={{ fontSize: F.sm, color: "#8ab0cc", lineHeight: 2, marginBottom: 2 }}>{w}</div>
+            <div key={i} style={{ fontSize: F.sm, color: "#4a6070", lineHeight: 2, marginBottom: 2 }}>{w}</div>
           ))}
           <div style={{ fontSize: F.xs, color: C.dim, marginTop: 8, fontStyle: "italic", borderTop: `1px solid ${C.border}`, paddingTop: 8 }}>
             原則: {principles.principle}
@@ -320,7 +320,7 @@ export default function SignalPage() {
 
       {/* ゲージ */}
       <div style={{ ...cardStyle, padding: "14px 18px" }}>
-        <div style={{ position: "relative", height: 20, background: "#0e1a30", borderRadius: 10, overflow: "hidden" }}>
+        <div style={{ position: "relative", height: 20, background: "#f0f2f5", borderRadius: 10, overflow: "hidden" }}>
           <div style={{ position: "absolute", left: 0, top: 0, height: "100%", width: "33%", background: `linear-gradient(90deg,${C.red},transparent)`, opacity: 0.12 }} />
           <div style={{ position: "absolute", right: 0, top: 0, height: "100%", width: "33%", background: `linear-gradient(270deg,${C.green},transparent)`, opacity: 0.12 }} />
           <div style={{ position: "absolute", left: "50%", top: 0, width: 1, height: "100%", background: C.border }} />
@@ -381,7 +381,7 @@ export default function SignalPage() {
 
       {/* 免責事項 */}
       <div style={{ padding: 10, background: `${C.orange}05`, borderRadius: 8, border: `1px solid ${C.orange}12` }}>
-        <p style={{ fontSize: F.xs, color: "#7a6a4a", lineHeight: 1.8 }}>
+        <p style={{ fontSize: F.xs, color: "#8a7a5a", lineHeight: 1.8 }}>
           ⚠️ 投資助言ではありません。{mode === "sim" ? "シミュレーションデータを使用しています。" : "実データですが、スコアリングの精度は未検証です。"}投資は自己責任で行ってください。
         </p>
       </div>

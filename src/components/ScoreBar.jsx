@@ -19,11 +19,11 @@ export default function ScoreBar({ item, expanded, onToggle }) {
           cursor: "pointer", padding: "12px 0",
         }}
       >
-        <div style={{ width: 140, fontSize: F.sm, color: "#8ab0cc", flexShrink: 0, fontWeight: 500 }}>
+        <div style={{ width: 140, fontSize: F.sm, color: "#4a6070", flexShrink: 0, fontWeight: 500 }}>
           {item.name}
         </div>
         <div style={{
-          flex: 1, height: 8, background: "#0e1a30",
+          flex: 1, height: 8, background: "#f0f2f5",
           borderRadius: 4, position: "relative", overflow: "hidden",
         }}>
           <div style={{ position: "absolute", left: "50%", top: 0, width: 1, height: "100%", background: C.border }} />
@@ -55,7 +55,7 @@ export default function ScoreBar({ item, expanded, onToggle }) {
             <div style={{ fontSize: F.xs, color: C.accent, fontWeight: 700, marginBottom: 4 }}>
               📖 この指標とは？
             </div>
-            <div style={{ fontSize: F.sm, color: "#90b8d4", lineHeight: 1.9 }}>{item.what}</div>
+            <div style={{ fontSize: F.sm, color: "#3a6a8a", lineHeight: 1.9 }}>{item.what}</div>
           </div>
 
           {/* 判定根拠 */}
@@ -64,7 +64,7 @@ export default function ScoreBar({ item, expanded, onToggle }) {
               ⚡ 判定根拠
             </div>
             {item.reasons.map((r, i) => (
-              <div key={i} style={{ fontSize: F.sm, color: "#8ab0cc", lineHeight: 2 }}>• {r}</div>
+              <div key={i} style={{ fontSize: F.sm, color: "#4a6070", lineHeight: 2 }}>• {r}</div>
             ))}
             <div style={{ color: C.dim, fontSize: F.xs, marginTop: 4 }}>
               ウェイト: {item.weight}%
@@ -82,8 +82,8 @@ export default function ScoreBar({ item, expanded, onToggle }) {
               </div>
               {item.terms.map((t, i) => (
                 <div key={i} style={{ marginBottom: i < item.terms.length - 1 ? 8 : 0 }}>
-                  <span style={{ fontSize: F.sm, color: "#d4b8e8", fontWeight: 600 }}>{t.w}</span>
-                  <div style={{ fontSize: F.xs, color: "#7890a0", lineHeight: 1.8, paddingLeft: 10 }}>{t.d}</div>
+                  <span style={{ fontSize: F.sm, color: "#7030a0", fontWeight: 600 }}>{t.w}</span>
+                  <div style={{ fontSize: F.xs, color: "#5a7080", lineHeight: 1.8, paddingLeft: 10 }}>{t.d}</div>
                 </div>
               ))}
             </div>

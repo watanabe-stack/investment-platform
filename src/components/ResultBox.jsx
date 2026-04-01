@@ -9,7 +9,7 @@ export default function ResultBox({ text }) {
 
   return (
     <div style={{
-      background: "#0e1a30",
+      background: "#f0f2f5",
       borderRadius: 8,
       padding: 16,
       fontSize: F.sm,

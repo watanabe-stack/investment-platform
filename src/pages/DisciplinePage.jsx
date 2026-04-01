@@ -10,7 +10,7 @@ const btnStyle = (color, active) => ({
   fontSize: F.sm, fontFamily: "inherit", fontWeight: 600, transition: "all 0.15s",
 });
 const inputStyle = {
-  background: "#0e1a30", border: `1.5px solid ${C.border}`, color: C.text,
+  background: "#f0f2f5", border: `1.5px solid ${C.border}`, color: C.text,
   padding: "10px 14px", borderRadius: 8, fontSize: F.base, fontFamily: "inherit", width: "100%", outline: "none",
 };
 
@@ -65,7 +65,7 @@ export default function DisciplinePage({ reframes, saveRF, biasChecks, saveBC, i
               保有銘柄に対して「もし今この株を持っていなかったら、今の価格で新たに買うか？」と問う。
               答えが「No」なら、持ち続ける理由は損失を認めたくない感情（アンカリング）に過ぎない可能性がある。
             </div>
-            <div style={{ background: "#0e1a30", borderRadius: 10, padding: 18 }}>
+            <div style={{ background: "#f0f2f5", borderRadius: 10, padding: 18 }}>
               <div style={{ display: "flex", gap: 10, marginBottom: 12, flexWrap: "wrap" }}>
                 <div style={{ flex: 2, minWidth: 150 }}><label style={{ fontSize: F.xs, color: C.dim, display: "block", marginBottom: 4 }}>銘柄名</label><input value={rfName} onChange={(e) => setRfName(e.target.value)} placeholder="例: トヨタ自動車" style={inputStyle} /></div>
                 <div style={{ flex: 1, minWidth: 100 }}><label style={{ fontSize: F.xs, color: C.dim, display: "block", marginBottom: 4 }}>買値</label><input type="number" value={rfBuyPrice} onChange={(e) => setRfBuyPrice(e.target.value)} placeholder="1000" style={inputStyle} /></div>
@@ -96,9 +96,9 @@ export default function DisciplinePage({ reframes, saveRF, biasChecks, saveBC, i
                 ))}
               </div>
 
-              {rfAnswer === "No" && <div style={{ background: `${C.red}08`, borderRadius: 8, padding: 16, marginBottom: 12, borderLeft: `3px solid ${C.red}` }}><div style={{ fontSize: F.h3, fontWeight: 700, color: C.red, marginBottom: 6 }}>⚠️ 売却を検討すべきです</div><div style={{ fontSize: F.sm, color: "#c08080", lineHeight: 2 }}>「買わない」と答えたなら、持ち続ける理由はアンカリングです。買値はもう関係ありません。</div></div>}
-              {rfAnswer === "Yes" && <div style={{ background: `${C.green}08`, borderRadius: 8, padding: 16, marginBottom: 12, borderLeft: `3px solid ${C.green}` }}><div style={{ fontSize: F.h3, fontWeight: 700, color: C.green, marginBottom: 6 }}>✅ 保有継続に合理的根拠あり</div><div style={{ fontSize: F.sm, color: "#80c0a0", lineHeight: 2 }}>今の価格でも買う価値があるなら合理的です。「買う理由」を記録しましょう。</div></div>}
-              {rfAnswer === "Maybe" && <div style={{ background: `${C.orange}08`, borderRadius: 8, padding: 16, marginBottom: 12, borderLeft: `3px solid ${C.orange}` }}><div style={{ fontSize: F.h3, fontWeight: 700, color: C.orange, marginBottom: 6 }}>💡 判断保留 → 追加リサーチが必要</div><div style={{ fontSize: F.sm, color: "#c0a060", lineHeight: 2 }}>迷うなら、何が足りないか書き出しましょう。ポジションサイズを半分に減らすことも選択肢です。</div></div>}
+              {rfAnswer === "No" && <div style={{ background: `${C.red}08`, borderRadius: 8, padding: 16, marginBottom: 12, borderLeft: `3px solid ${C.red}` }}><div style={{ fontSize: F.h3, fontWeight: 700, color: C.red, marginBottom: 6 }}>⚠️ 売却を検討すべきです</div><div style={{ fontSize: F.sm, color: "#a03030", lineHeight: 2 }}>「買わない」と答えたなら、持ち続ける理由はアンカリングです。買値はもう関係ありません。</div></div>}
+              {rfAnswer === "Yes" && <div style={{ background: `${C.green}08`, borderRadius: 8, padding: 16, marginBottom: 12, borderLeft: `3px solid ${C.green}` }}><div style={{ fontSize: F.h3, fontWeight: 700, color: C.green, marginBottom: 6 }}>✅ 保有継続に合理的根拠あり</div><div style={{ fontSize: F.sm, color: "#1a7a50", lineHeight: 2 }}>今の価格でも買う価値があるなら合理的です。「買う理由」を記録しましょう。</div></div>}
+              {rfAnswer === "Maybe" && <div style={{ background: `${C.orange}08`, borderRadius: 8, padding: 16, marginBottom: 12, borderLeft: `3px solid ${C.orange}` }}><div style={{ fontSize: F.h3, fontWeight: 700, color: C.orange, marginBottom: 6 }}>💡 判断保留 → 追加リサーチが必要</div><div style={{ fontSize: F.sm, color: "#8a6a20", lineHeight: 2 }}>迷うなら、何が足りないか書き出しましょう。ポジションサイズを半分に減らすことも選択肢です。</div></div>}
 
               <div style={{ marginBottom: 12 }}>
                 <label style={{ fontSize: F.xs, color: C.dim, display: "block", marginBottom: 4 }}>判断の理由メモ</label>
@@ -182,12 +182,12 @@ export default function DisciplinePage({ reframes, saveRF, biasChecks, saveBC, i
             {kellyResult.expectation <= 0 && (
               <div style={{ ...cardStyle, borderColor: `${C.red}30`, background: `${C.red}08` }}>
                 <div style={{ fontSize: F.h3, fontWeight: 700, color: C.red, marginBottom: 6 }}>🚫 期待値がマイナスです</div>
-                <div style={{ fontSize: F.sm, color: "#c08080", lineHeight: 2 }}>この勝率とリスクリワード比では資産が減少します。手法を見直してください。</div>
+                <div style={{ fontSize: F.sm, color: "#a03030", lineHeight: 2 }}>この勝率とリスクリワード比では資産が減少します。手法を見直してください。</div>
               </div>
             )}
             <div style={cardStyle}>
               <div style={{ fontSize: F.h3, fontWeight: 700, color: C.dim, marginBottom: 10 }}>📐 ケリー基準の公式</div>
-              <div style={{ background: "#0e1a30", borderRadius: 8, padding: 16, fontSize: F.base, color: C.text, lineHeight: 2.2, fontFamily: "'JetBrains Mono',monospace" }}>
+              <div style={{ background: "#f0f2f5", borderRadius: 8, padding: 16, fontSize: F.base, color: C.text, lineHeight: 2.2, fontFamily: "'JetBrains Mono',monospace" }}>
                 K = (p × (B + 1) - 1) / B<br /><br />
                 <span style={{ color: C.dim }}>p = 勝率 = {(parseFloat(kellyWinRate) / 100).toFixed(2)}</span><br />
                 <span style={{ color: C.dim }}>B = オッズ = {kellyResult.b.toFixed(2)}</span><br />
@@ -249,7 +249,7 @@ export default function DisciplinePage({ reframes, saveRF, biasChecks, saveBC, i
             <div style={{ fontSize: F.xs, color: C.dim, marginTop: 8, lineHeight: 1.8 }}>推奨: 35%以内。S&P500の上位10社が指数の1/3を占める集中は2000年のドットコムバブル以来の異常事態（docs参照）。</div>
           </div>
 
-          <div style={{ background: "#0e1a30", borderRadius: 10, padding: 18, marginBottom: 16 }}>
+          <div style={{ background: "#f0f2f5", borderRadius: 10, padding: 18, marginBottom: 16 }}>
             <div style={{ fontSize: F.h3, fontWeight: 700, color: C.text, marginBottom: 12 }}>📌 Clause 6: 自分ルール（自由記述）</div>
             <div style={{ fontSize: F.sm, color: C.dim, marginBottom: 8, lineHeight: 2 }}>暴落時にやること・やらないこと。冷静な今の自分がパニック時の自分に残す遺言。</div>
             <textarea value={ips.customRules} onChange={(e) => saveIPS({ ...ips, customRules: e.target.value })}
@@ -258,7 +258,7 @@ export default function DisciplinePage({ reframes, saveRF, biasChecks, saveBC, i
 
           <div style={{ ...cardStyle, background: `${C.cyan}06`, borderColor: `${C.cyan}20` }}>
             <div style={{ fontSize: F.h3, fontWeight: 700, color: C.cyan, marginBottom: 10 }}>🔄 定次リフレーミング・リマインダー</div>
-            <div style={{ fontSize: F.sm, color: "#80b8c8", lineHeight: 2 }}>
+            <div style={{ fontSize: F.sm, color: "#3a7080", lineHeight: 2 }}>
               毎月、全保有銘柄に「💪 リフレーミング回診」を実行してください。<br />
               1. 「今この株を持っていなかったら、今の価格で買うか？」に答える<br />
               2. 「No」の銘柄は損益に関わらず売却を検討<br />

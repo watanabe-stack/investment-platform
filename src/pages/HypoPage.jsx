@@ -11,7 +11,7 @@ const btnStyle = (color, active) => ({
   fontSize: F.sm, fontFamily: "inherit", fontWeight: 600, transition: "all 0.15s",
 });
 const inputStyle = {
-  background: "#0e1a30", border: `1.5px solid ${C.border}`, color: C.text,
+  background: "#f0f2f5", border: `1.5px solid ${C.border}`, color: C.text,
   padding: "10px 14px", borderRadius: 8, fontSize: F.base, fontFamily: "inherit", width: "100%", outline: "none",
 };
 
@@ -121,13 +121,13 @@ export default function HypoPage({ hypos, saveH }) {
               </div>
 
               {h.basis && (
-                <div style={{ fontSize: F.sm, color: "#7090a8", lineHeight: 1.8, padding: "10px 14px", background: "#0e1a30", borderRadius: 8, marginBottom: 10 }}>
+                <div style={{ fontSize: F.sm, color: "#5a6a78", lineHeight: 1.8, padding: "10px 14px", background: "#f0f2f5", borderRadius: 8, marginBottom: 10 }}>
                   <strong style={{ color: C.dim }}>根拠：</strong>{h.basis}
                 </div>
               )}
 
               {h.lastVerification && (
-                <div style={{ fontSize: F.sm, color: "#7a9ab8", lineHeight: 1.8, padding: "12px 14px", background: `${C.accent}06`, borderRadius: 8, borderLeft: `3px solid ${C.accent}`, marginBottom: 10 }}>
+                <div style={{ fontSize: F.sm, color: "#4a6a88", lineHeight: 1.8, padding: "12px 14px", background: `${C.accent}06`, borderRadius: 8, borderLeft: `3px solid ${C.accent}`, marginBottom: 10 }}>
                   <div style={{ fontSize: F.xs, color: C.dim, marginBottom: 6 }}>🔍 最終検証: {h.lastVerifiedAt ? new Date(h.lastVerifiedAt).toLocaleDateString("ja-JP") : ""}</div>
                   <div style={{ whiteSpace: "pre-wrap" }}>{h.lastVerification}</div>
                 </div>
@@ -231,7 +231,7 @@ export default function HypoPage({ hypos, saveH }) {
                           <span style={{ color: C.red }}>外れ{s.miss}</span>
                         </div>
                         <div style={{ fontSize: F.h3, fontWeight: 700, color: rateCol, minWidth: 50, textAlign: "right" }}>{rate}%</div>
-                        <div style={{ width: 60, height: 6, background: "#0e1a30", borderRadius: 3, overflow: "hidden" }}>
+                        <div style={{ width: 60, height: 6, background: "#f0f2f5", borderRadius: 3, overflow: "hidden" }}>
                           <div style={{ width: `${rate}%`, height: "100%", background: rateCol, borderRadius: 3 }} />
                         </div>
                       </div>
@@ -271,7 +271,7 @@ export default function HypoPage({ hypos, saveH }) {
             {/* 学習の解説 */}
             <div style={{ ...cardStyle, background: `${C.cyan}06`, borderColor: `${C.cyan}20` }}>
               <div style={{ fontSize: F.h3, fontWeight: 700, color: C.cyan, marginBottom: 8 }}>🧠 日次学習の仕組み</div>
-              <div style={{ fontSize: F.sm, color: "#80b8c8", lineHeight: 2 }}>
+              <div style={{ fontSize: F.sm, color: "#3a7080", lineHeight: 2 }}>
                 1. 毎日、Signal Engineページで「🔄 全銘柄の日次仮説を生成・検証」を押す<br />
                 2. 全ウォッチリスト銘柄のスコアを計算し、「明日上がる/下がる/横ばい」の仮説を自動生成<br />
                 3. 同時に、前日の仮説を実際の値動きと照合して自動検証<br />
@@ -357,7 +357,7 @@ export default function HypoPage({ hypos, saveH }) {
                       <div style={{ fontSize: F.h3, fontWeight: 700, color: rateCol, minWidth: 50, textAlign: "right" }}>
                         {s.rate === "—" ? "—" : `${s.rate}%`}
                       </div>
-                      <div style={{ width: 60, height: 6, background: "#0e1a30", borderRadius: 3, overflow: "hidden" }}>
+                      <div style={{ width: 60, height: 6, background: "#f0f2f5", borderRadius: 3, overflow: "hidden" }}>
                         {rateNum >= 0 && <div style={{ width: `${rateNum}%`, height: "100%", background: rateCol, borderRadius: 3 }} />}
                       </div>
                     </div>
@@ -375,7 +375,7 @@ export default function HypoPage({ hypos, saveH }) {
           {/* パターン分析の案内 */}
           <div style={{ ...cardStyle, background: `${C.cyan}06`, borderColor: `${C.cyan}20` }}>
             <div style={{ fontSize: F.h3, fontWeight: 700, color: C.cyan, marginBottom: 8 }}>🔄 仮説→検証サイクルで成長する</div>
-            <div style={{ fontSize: F.sm, color: "#80b8c8", lineHeight: 2 }}>
+            <div style={{ fontSize: F.sm, color: "#3a7080", lineHeight: 2 }}>
               1. Research Labでニュース→セクター→銘柄を分析<br />
               2. 仮説を立てて記録する（「なぜそう思うか」も必ず書く）<br />
               3. 時間が経ったら結果を検証（AI検証ボタンで最新情報と照合）<br />

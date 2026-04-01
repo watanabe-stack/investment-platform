@@ -50,7 +50,7 @@ export default function App() {
       fontFamily: "'Noto Sans JP','JetBrains Mono',sans-serif",
       padding: "16px 16px 30px",
     }}>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Orbitron:wght@700;900&display=swap');*{box-sizing:border-box;margin:0}textarea{resize:vertical;font-family:inherit}@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}@keyframes glow{0%,100%{filter:brightness(1)}50%{filter:brightness(1.25)}}.loader{animation:glow 1.2s infinite}`}</style>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Orbitron:wght@700;900&display=swap');*{box-sizing:border-box;margin:0}body{background:#f5f7fa}textarea{resize:vertical;font-family:inherit}input,select,textarea{font-size:16px}@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}@keyframes glow{0%,100%{opacity:1}50%{opacity:0.7}}.loader{animation:glow 1.2s infinite}`}</style>
 
       <Navigation page={page} setPage={setPage} activeHypoCount={activeHypoCount} />
 
@@ -64,7 +64,7 @@ export default function App() {
       {page === "roadmap" && <RoadmapPage />}
 
       {/* 全ページ共通の免責事項 */}
-      <div style={{ padding: "12px 16px", marginTop: 16, background: `${C.border}30`, borderRadius: 8, fontSize: 10, color: C.dim, lineHeight: 1.8, textAlign: "center" }}>
+      <div style={{ padding: "14px 18px", marginTop: 20, background: `${C.border}40`, borderRadius: 10, fontSize: 13, color: C.dim, lineHeight: 1.8, textAlign: "center" }}>
         ⚠️ 本ツールは投資助言ではありません。シミュレーションデータを含みます。投資判断は自己責任で行ってください。
       </div>
     </div>

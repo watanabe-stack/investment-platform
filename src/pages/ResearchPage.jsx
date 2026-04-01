@@ -11,7 +11,7 @@ const btnStyle = (color, active) => ({
   fontSize: F.sm, fontFamily: "inherit", fontWeight: 600, transition: "all 0.15s",
 });
 const inputStyle = {
-  background: "#0e1a30", border: `1.5px solid ${C.border}`, color: C.text,
+  background: "#f0f2f5", border: `1.5px solid ${C.border}`, color: C.text,
   padding: "10px 14px", borderRadius: 8, fontSize: F.base, fontFamily: "inherit", width: "100%", outline: "none",
 };
 
@@ -116,11 +116,11 @@ export default function ResearchPage({ onAddHypo }) {
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
               <div style={{ flex: 1, minWidth: 250, background: `${C.green}06`, borderRadius: 8, padding: 14, borderLeft: `3px solid ${C.green}` }}>
                 <div style={{ fontSize: F.h3, fontWeight: 700, color: C.green, marginBottom: 8 }}>🟢 Bull（買う理由）</div>
-                <div style={{ fontSize: F.sm, color: "#80c0a0", lineHeight: 2, whiteSpace: "pre-wrap" }}>{bullR || "—"}</div>
+                <div style={{ fontSize: F.sm, color: "#1a7a50", lineHeight: 2, whiteSpace: "pre-wrap" }}>{bullR || "—"}</div>
               </div>
               <div style={{ flex: 1, minWidth: 250, background: `${C.red}06`, borderRadius: 8, padding: 14, borderLeft: `3px solid ${C.red}` }}>
                 <div style={{ fontSize: F.h3, fontWeight: 700, color: C.red, marginBottom: 8 }}>🔴 Bear（買わない理由）</div>
-                <div style={{ fontSize: F.sm, color: "#c08080", lineHeight: 2, whiteSpace: "pre-wrap" }}>{bearR || "—"}</div>
+                <div style={{ fontSize: F.sm, color: "#a03030", lineHeight: 2, whiteSpace: "pre-wrap" }}>{bearR || "—"}</div>
               </div>
             </div>
           )}
@@ -136,7 +136,7 @@ export default function ResearchPage({ onAddHypo }) {
           </div>
           <div style={{ fontSize: F.sm, color: C.dim }}>分析を元に仮説を言語化。後で検証して精度を磨く。</div>
           {showNewH && (
-            <div style={{ background: "#0e1a30", borderRadius: 10, padding: 18, marginTop: 12 }}>
+            <div style={{ background: "#f0f2f5", borderRadius: 10, padding: 18, marginTop: 12 }}>
               <label style={{ fontSize: F.xs, color: C.dim, display: "block", marginBottom: 4 }}>仮説</label>
               <textarea value={newH.thesis} onChange={(e) => setNewH({ ...newH, thesis: e.target.value })} style={{ ...inputStyle, minHeight: 60, marginBottom: 12 }} />
               <div style={{ display: "flex", gap: 10, marginBottom: 12 }}>
@@ -160,7 +160,7 @@ export default function ResearchPage({ onAddHypo }) {
       )}
 
       <div style={{ padding: 10, background: `${C.orange}05`, borderRadius: 8, border: `1px solid ${C.orange}12`, marginTop: 8 }}>
-        <p style={{ fontSize: F.xs, color: "#7a6a4a", lineHeight: 1.8 }}>⚠️ リサーチ補助ツールです。AIの分析は調査の出発点であり、投資助言ではありません。</p>
+        <p style={{ fontSize: F.xs, color: "#8a7a5a", lineHeight: 1.8 }}>⚠️ リサーチ補助ツールです。AIの分析は調査の出発点であり、投資助言ではありません。</p>
       </div>
     </div>
   );

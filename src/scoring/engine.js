@@ -269,10 +269,10 @@ function scoreLongIndicator(ind, ctx, s, reasons) {
  */
 export function getVerdict(score) {
   if (score >= 45) return { label: "強い買い", color: C.green, bg: `${C.green}12` };
-  if (score >= 20) return { label: "買い", color: "#66ffa6", bg: `${C.green}08` };
-  if (score >= 5) return { label: "やや買い", color: "#a5d6a7", bg: `${C.green}05` };
-  if (score > -5) return { label: "様子見", color: "#90a4ae", bg: "rgba(144,164,174,0.06)" };
-  if (score > -20) return { label: "やや売り", color: "#ef9a9a", bg: `${C.red}05` };
+  if (score >= 20) return { label: "買い", color: "#0d8a45", bg: `${C.green}08` };
+  if (score >= 5) return { label: "やや買い", color: "#2a9a5a", bg: `${C.green}05` };
+  if (score > -5) return { label: "様子見", color: "#6b7a8d", bg: "rgba(107,122,141,0.06)" };
+  if (score > -20) return { label: "やや売り", color: "#c04030", bg: `${C.red}05` };
   if (score > -45) return { label: "売り", color: C.red, bg: `${C.red}08` };
-  return { label: "強い売り", color: "#ff1744", bg: `${C.red}12` };
+  return { label: "強い売り", color: "#d93025", bg: `${C.red}12` };
 }

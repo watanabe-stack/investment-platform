@@ -9,7 +9,7 @@ const btnStyle = (color, active) => ({
   fontSize: F.sm, fontFamily: "inherit", fontWeight: 600, transition: "all 0.15s",
 });
 const inputStyle = {
-  background: "#0e1a30", border: `1.5px solid ${C.border}`, color: C.text,
+  background: "#f0f2f5", border: `1.5px solid ${C.border}`, color: C.text,
   padding: "10px 14px", borderRadius: 8, fontSize: F.base, fontFamily: "inherit", width: "100%", outline: "none",
 };
 
@@ -369,8 +369,8 @@ export default function TradeJournalPage() {
                   {isClosed && <span>手数料: ¥{parseFloat(t.commission).toLocaleString()} / 税: ¥{t.tax.toLocaleString()}</span>}
                 </div>
 
-                {t.entryReason && <div style={{ fontSize: F.sm, color: "#7090a8", lineHeight: 1.8, marginBottom: 4 }}>📥 {t.entryReason}</div>}
-                {t.exitReason && <div style={{ fontSize: F.sm, color: "#7090a8", lineHeight: 1.8, marginBottom: 4 }}>📤 {t.exitReason}</div>}
+                {t.entryReason && <div style={{ fontSize: F.sm, color: "#5a6a78", lineHeight: 1.8, marginBottom: 4 }}>📥 {t.entryReason}</div>}
+                {t.exitReason && <div style={{ fontSize: F.sm, color: "#5a6a78", lineHeight: 1.8, marginBottom: 4 }}>📤 {t.exitReason}</div>}
                 {t.review && <div style={{ fontSize: F.sm, color: C.orange, lineHeight: 1.8, marginBottom: 4 }}>📝 {t.review}</div>}
 
                 <div style={{ display: "flex", gap: 8, fontSize: F.xs, flexWrap: "wrap", marginBottom: 6 }}>
@@ -427,7 +427,7 @@ export default function TradeJournalPage() {
                     { l: "総手数料", v: `¥${stats.totalCommission.toLocaleString()}`, c: C.dim },
                     { l: "総税金", v: `¥${stats.totalTax.toLocaleString()}`, c: C.dim },
                   ].map((c, i) => (
-                    <div key={i} style={{ padding: "12px 14px", background: "#0e1a30", borderRadius: 8 }}>
+                    <div key={i} style={{ padding: "12px 14px", background: "#f0f2f5", borderRadius: 8 }}>
                       <div style={{ fontSize: F.xs, color: C.dim, marginBottom: 4 }}>{c.l}</div>
                       <div style={{ fontSize: F.h2, fontWeight: 700, color: c.c }}>{c.v}</div>
                     </div>
@@ -451,7 +451,7 @@ export default function TradeJournalPage() {
                         <span style={{ fontSize: F.xs, color: C.dim }}>{data.entry}回</span>
                         <div style={{ flex: 1 }} />
                         <span style={{ fontSize: F.h3, fontWeight: 700, color: rateCol }}>{rate}%</span>
-                        <div style={{ width: 60, height: 6, background: "#0e1a30", borderRadius: 3, overflow: "hidden" }}>
+                        <div style={{ width: 60, height: 6, background: "#f0f2f5", borderRadius: 3, overflow: "hidden" }}>
                           <div style={{ width: `${rate}%`, height: "100%", background: rateCol, borderRadius: 3 }} />
                         </div>
                       </div>
@@ -463,7 +463,7 @@ export default function TradeJournalPage() {
               {/* アドバイス */}
               <div style={{ ...cardStyle, background: `${C.cyan}06`, borderColor: `${C.cyan}20` }}>
                 <div style={{ fontSize: F.h3, fontWeight: 700, color: C.cyan, marginBottom: 8 }}>💡 取引記録から学ぶ</div>
-                <div style={{ fontSize: F.sm, color: "#80b8c8", lineHeight: 2 }}>
+                <div style={{ fontSize: F.sm, color: "#3a7080", lineHeight: 2 }}>
                   取引記録の目的は「自分のパターン」を見つけることです。<br />
                   ・勝率50%以上 + リスクリワード比1.0以上 → 手法にエッジあり<br />
                   ・IPS遵守率が低い → 感情的な取引が多い可能性。規律ツールを活用<br />
@@ -478,7 +478,7 @@ export default function TradeJournalPage() {
       )}
 
       <div style={{ padding: 10, background: `${C.orange}05`, borderRadius: 8, border: `1px solid ${C.orange}12`, marginTop: 8 }}>
-        <p style={{ fontSize: F.xs, color: "#7a6a4a", lineHeight: 1.8 }}>⚠️ 投資は自己責任です。このツールは取引記録・分析の補助であり、投資助言ではありません。</p>
+        <p style={{ fontSize: F.xs, color: "#8a7a5a", lineHeight: 1.8 }}>⚠️ 投資は自己責任です。このツールは取引記録・分析の補助であり、投資助言ではありません。</p>
       </div>
     </div>
   );

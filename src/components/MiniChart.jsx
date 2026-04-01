@@ -74,7 +74,7 @@ export default function MiniChart({ data, count = 60, showPatterns = true }) {
         const v = mn + (mx - mn) * f;
         return (
           <g key={f}>
-            <line x1={P.l} y1={y(v)} x2={W - P.r} y2={y(v)} stroke="#152035" strokeWidth="0.5" />
+            <line x1={P.l} y1={y(v)} x2={W - P.r} y2={y(v)} stroke="#d0d8e0" strokeWidth="0.5" />
             <text x={W - P.r + 4} y={y(v) + 4} fill={C.dim} fontSize="9" fontFamily="monospace">
               {v.toFixed(v > 1000 ? 0 : 1)}
             </text>
@@ -101,7 +101,7 @@ export default function MiniChart({ data, count = 60, showPatterns = true }) {
       {/* ローソク足 */}
       {sl.map((d, i) => {
         const bull = d.c >= d.o;
-        const col = bull ? "#00c853" : "#ff1744";
+        const col = bull ? "#0d9e4f" : "#d93025";
         return (
           <g key={i}>
             <line x1={x(i)} y1={y(d.h)} x2={x(i)} y2={y(d.l)} stroke={col} strokeWidth="0.8" />

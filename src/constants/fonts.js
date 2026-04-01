@@ -1,10 +1,10 @@
 export const F = {
-  base: 14,
-  sm: 12,
-  xs: 11,
-  label: 10,
-  h1: 20,
-  h2: 16,
-  h3: 14,
-  big: 28,
+  base: 16,
+  sm: 14,
+  xs: 13,
+  label: 12,
+  h1: 24,
+  h2: 20,
+  h3: 17,
+  big: 32,
 };

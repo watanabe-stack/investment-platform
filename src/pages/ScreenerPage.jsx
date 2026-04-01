@@ -11,7 +11,7 @@ const btnStyle = (color, active) => ({
   fontSize: F.sm, fontFamily: "inherit", fontWeight: 600, transition: "all 0.15s",
 });
 const inputStyle = {
-  background: "#0e1a30", border: `1.5px solid ${C.border}`, color: C.text,
+  background: "#f0f2f5", border: `1.5px solid ${C.border}`, color: C.text,
   padding: "10px 14px", borderRadius: 8, fontSize: F.base, fontFamily: "inherit", width: "100%", outline: "none",
 };
 
@@ -194,7 +194,7 @@ export default function ScreenerPage() {
               <div style={{ fontSize: F.h3, fontWeight: 700, color: C.green, marginBottom: 12 }}>📊 スクリーニング結果</div>
               {result.map((stock, i) => (
                 <div key={i} style={{
-                  background: "#0e1a30", borderRadius: 10, padding: 16, marginBottom: 10,
+                  background: "#f0f2f5", borderRadius: 10, padding: 16, marginBottom: 10,
                   border: `1px solid ${C.border}`,
                 }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
@@ -227,7 +227,7 @@ export default function ScreenerPage() {
           )}
 
           <div style={{ padding: 10, background: `${C.orange}05`, borderRadius: 8, border: `1px solid ${C.orange}12`, marginTop: 8 }}>
-            <p style={{ fontSize: F.xs, color: "#7a6a4a", lineHeight: 1.8 }}>⚠️ スクリーニング補助ツールです。AIの分析は調査の出発点であり、投資助言ではありません。最終判断は必ずご自身で行ってください。</p>
+            <p style={{ fontSize: F.xs, color: "#8a7a5a", lineHeight: 1.8 }}>⚠️ スクリーニング補助ツールです。AIの分析は調査の出発点であり、投資助言ではありません。最終判断は必ずご自身で行ってください。</p>
           </div>
         </div>
       )}
@@ -294,7 +294,7 @@ export default function ScreenerPage() {
                 }}>{w.status}</span>
               </div>
 
-              {w.reason && <div style={{ fontSize: F.sm, color: "#7090a8", lineHeight: 1.8, marginBottom: 8 }}>💡 {w.reason}</div>}
+              {w.reason && <div style={{ fontSize: F.sm, color: "#5a6a78", lineHeight: 1.8, marginBottom: 8 }}>💡 {w.reason}</div>}
               <div style={{ fontSize: F.xs, color: C.dim, marginBottom: 10 }}>追加日: {new Date(w.addedAt).toLocaleDateString("ja-JP")}</div>
 
               <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 8 }}>
@@ -311,7 +311,7 @@ export default function ScreenerPage() {
               </div>
 
               {checkResult[w.id] && (
-                <div style={{ background: `${C.accent}06`, borderRadius: 8, padding: 12, borderLeft: `3px solid ${C.accent}`, fontSize: F.sm, color: "#7a9ab8", lineHeight: 1.8, whiteSpace: "pre-wrap" }}>
+                <div style={{ background: `${C.accent}06`, borderRadius: 8, padding: 12, borderLeft: `3px solid ${C.accent}`, fontSize: F.sm, color: "#4a6a88", lineHeight: 1.8, whiteSpace: "pre-wrap" }}>
                   <div style={{ fontSize: F.xs, color: C.dim, marginBottom: 6 }}>🔍 最新状況</div>
                   {checkResult[w.id]}
                 </div>
@@ -320,7 +320,7 @@ export default function ScreenerPage() {
           ))}
 
           <div style={{ padding: 10, background: `${C.orange}05`, borderRadius: 8, border: `1px solid ${C.orange}12`, marginTop: 8 }}>
-            <p style={{ fontSize: F.xs, color: "#7a6a4a", lineHeight: 1.8 }}>⚠️ ウォッチリストは投資推奨リストではありません。必ずResearch Labで深掘り調査してから判断してください。</p>
+            <p style={{ fontSize: F.xs, color: "#8a7a5a", lineHeight: 1.8 }}>⚠️ ウォッチリストは投資推奨リストではありません。必ずResearch Labで深掘り調査してから判断してください。</p>
           </div>
         </div>
       )}
