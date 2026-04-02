@@ -86,36 +86,50 @@ export default function SignalPage() {
     setRealError("");
     setSearchResults([]);
     try {
-      // 日本株の4桁コードが入力された場合、".T"を自動付与してティッカーとしても検索
-      const isJpCode = /^\d{4}$/.test(q);
-      const results = await searchStocks(q);
+      // 日本株の4桁コード or .T付きの場合
+      const isJpCode = /^\d{4}$/.test(q) || /^\d{4}\.T$/i.test(q);
+      const code4 = q.replace(/\.T$/i, "");
 
-      // 日本株コードの場合、直接追加オプションを先頭に表示
+      // Alpha Vantageで検索（日本企業名でも米国ADRがヒットする）
+      const results = await searchStocks(q);
       const augmented = [...(results || [])];
+
+      // 日本株コードの場合、シミュレーション分析の案内を表示
       if (isJpCode) {
         augmented.unshift({
-          symbol: `${q}.T`,
-          name: `東証 ${q}（直接追加）`,
-          type: "Equity",
+          symbol: `SIM_JP_${code4}`,
+          name: `📊 東証${code4} — シミュレーションで分析`,
+          type: "Simulation",
           region: "Tokyo",
           currency: "JPY",
-          isDirect: true,
+          note: "※Alpha Vantage無料プランでは日本株データ未対応のため、シミュレーションデータで分析します",
         });
       }
-      // ".T"付きティッカーが入力された場合も直接追加オプション
-      if (/^\d{4}\.T$/i.test(q)) {
+
+      // よく使われる日本企業のADRマッピングを提案
+      const adrMap = {
+        "7203": { symbol: "TM", name: "Toyota Motor (米国ADR)" },
+        "6758": { symbol: "SONY", name: "Sony Group (米国ADR)" },
+        "7974": { symbol: "NTDOY", name: "Nintendo (米国ADR)" },
+        "9984": { symbol: "SFTBY", name: "SoftBank Group (米国ADR)" },
+        "6861": { symbol: "KEYCY", name: "Keyence (米国ADR)" },
+        "8306": { symbol: "MUFG", name: "三菱UFJ (米国ADR)" },
+        "9432": { symbol: "NTTYY", name: "NTT (米国ADR)" },
+        "6501": { symbol: "HTHIY", name: "日立製作所 (米国ADR)" },
+        "8035": { symbol: "TOELY", name: "東京エレクトロン (米国ADR)" },
+      };
+      if (isJpCode && adrMap[code4]) {
         augmented.unshift({
-          symbol: q.toUpperCase(),
-          name: `東証 ${q.toUpperCase()}（直接追加）`,
+          symbol: adrMap[code4].symbol,
+          name: `${adrMap[code4].name} — 実データで分析可能`,
           type: "Equity",
-          region: "Tokyo",
-          currency: "JPY",
-          isDirect: true,
+          region: "United States",
+          currency: "USD",
         });
       }
 
       setSearchResults(augmented);
-      if (augmented.length === 0) setRealError("該当する銘柄が見つかりませんでした。日本株は4桁コード（例: 7203）で検索できます。");
+      if (augmented.length === 0) setRealError("該当する銘柄が見つかりませんでした");
     } catch (e) {
       setRealError(e.message || "検索エラー");
       setSearchResults([]);
@@ -124,11 +138,21 @@ export default function SignalPage() {
   };
 
   const handleAddFromSearch = (item) => {
+    // シミュレーション銘柄の場合
+    if (item.symbol.startsWith("SIM_JP_")) {
+      setMode("sim");
+      setSi(0); // デフォルトのシミュレーションデータを使用
+      setSearchResults([]);
+      setSearchQuery("");
+      setRealError("");
+      return;
+    }
+
     const updated = addToWatchlist(item.symbol, item.name);
     setWatchlist(updated);
     setSearchResults([]);
     setSearchQuery("");
-    // 追加後すぐにデータ取得
+    setRealError("");
     loadRealData(item.symbol);
   };
 
