@@ -87,46 +87,27 @@ export default function SignalPage() {
     setSearchResults([]);
     try {
       // 日本株の4桁コード or .T付きの場合
-      const isJpCode = /^\d{4}$/.test(q) || /^\d{4}\.T$/i.test(q);
+      const isJpCode = /^\d{4,5}$/.test(q) || /^\d{4,5}\.T$/i.test(q);
       const code4 = q.replace(/\.T$/i, "");
 
-      // Alpha Vantageで検索（日本企業名でも米国ADRがヒットする）
-      const results = await searchStocks(q);
-      const augmented = [...(results || [])];
+      const augmented = [];
 
-      // 日本株コードの場合、シミュレーション分析の案内を表示
+      // 日本株コードの場合、J-Quants経由で直接追加オプション
       if (isJpCode) {
-        augmented.unshift({
-          symbol: `SIM_JP_${code4}`,
-          name: `📊 東証${code4} — シミュレーションで分析`,
-          type: "Simulation",
+        augmented.push({
+          symbol: code4,
+          name: `東証 ${code4} — 日本株実データで分析`,
+          type: "Equity",
           region: "Tokyo",
           currency: "JPY",
-          note: "※Alpha Vantage無料プランでは日本株データ未対応のため、シミュレーションデータで分析します",
         });
       }
 
-      // よく使われる日本企業のADRマッピングを提案
-      const adrMap = {
-        "7203": { symbol: "TM", name: "Toyota Motor (米国ADR)" },
-        "6758": { symbol: "SONY", name: "Sony Group (米国ADR)" },
-        "7974": { symbol: "NTDOY", name: "Nintendo (米国ADR)" },
-        "9984": { symbol: "SFTBY", name: "SoftBank Group (米国ADR)" },
-        "6861": { symbol: "KEYCY", name: "Keyence (米国ADR)" },
-        "8306": { symbol: "MUFG", name: "三菱UFJ (米国ADR)" },
-        "9432": { symbol: "NTTYY", name: "NTT (米国ADR)" },
-        "6501": { symbol: "HTHIY", name: "日立製作所 (米国ADR)" },
-        "8035": { symbol: "TOELY", name: "東京エレクトロン (米国ADR)" },
-      };
-      if (isJpCode && adrMap[code4]) {
-        augmented.unshift({
-          symbol: adrMap[code4].symbol,
-          name: `${adrMap[code4].name} — 実データで分析可能`,
-          type: "Equity",
-          region: "United States",
-          currency: "USD",
-        });
-      }
+      // Alpha Vantageでも検索（米国ADR等がヒットする場合あり）
+      try {
+        const results = await searchStocks(q);
+        augmented.push(...(results || []));
+      } catch { /* Alpha Vantage検索失敗は無視 */ }
 
       setSearchResults(augmented);
       if (augmented.length === 0) setRealError("該当する銘柄が見つかりませんでした");
@@ -138,16 +119,6 @@ export default function SignalPage() {
   };
 
   const handleAddFromSearch = (item) => {
-    // シミュレーション銘柄の場合
-    if (item.symbol.startsWith("SIM_JP_")) {
-      setMode("sim");
-      setSi(0); // デフォルトのシミュレーションデータを使用
-      setSearchResults([]);
-      setSearchQuery("");
-      setRealError("");
-      return;
-    }
-
     const updated = addToWatchlist(item.symbol, item.name);
     setWatchlist(updated);
     setSearchResults([]);
