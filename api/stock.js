@@ -46,7 +46,7 @@ async function fetchJQuants(code, res) {
     const fromStr = from.toISOString().split("T")[0].replace(/-/g, "");
     const toStr = to.toISOString().split("T")[0].replace(/-/g, "");
 
-    const url = `https://api.jquants.com/v2/prices/daily_quotes?code=${code}&from=${fromStr}&to=${toStr}`;
+    const url = `https://api.jquants.com/v2/equities/bars/daily?code=${code}&from=${fromStr}&to=${toStr}`;
     const response = await fetch(url, {
       headers: { "x-api-key": apiKey },
     });
@@ -59,22 +59,22 @@ async function fetchJQuants(code, res) {
       });
     }
 
-    const quotes = data.daily_quotes || [];
+    const quotes = data.data || [];
     if (quotes.length === 0) {
       return res.status(404).json({ error: `日本株 ${code} のデータが見つかりません` });
     }
 
-    // Signal Engine互換フォーマットに変換
+    // Signal Engine互換フォーマットに変換（分割調整済み株価を優先）
     const bars = quotes.map((q) => {
       const dt = new Date(q.Date);
       return {
         date: q.Date,
         ds: `${dt.getMonth() + 1}/${dt.getDate()}`,
-        o: parseFloat(q.AdjustmentOpen || q.Open || 0),
-        h: parseFloat(q.AdjustmentHigh || q.High || 0),
-        l: parseFloat(q.AdjustmentLow || q.Low || 0),
-        c: parseFloat(q.AdjustmentClose || q.Close || 0),
-        v: parseInt(q.Volume || 0),
+        o: parseFloat(q.AdjO || q.O || 0),
+        h: parseFloat(q.AdjH || q.H || 0),
+        l: parseFloat(q.AdjL || q.L || 0),
+        c: parseFloat(q.AdjC || q.C || 0),
+        v: parseInt(q.AdjVo || q.Vo || 0),
       };
     }).filter((d) => d.c > 0);
 
