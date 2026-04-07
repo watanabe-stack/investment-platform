@@ -8,10 +8,10 @@ import { findLocalMaxima, findLocalMinima } from "../indicators/chartPatterns";
  * - 支持線/抵抗線の自動描画
  * - ローソク足パターンのマーカー表示
  */
-export default function MiniChart({ data, count = 60, showPatterns = true }) {
+export default function MiniChart({ data, count = 60, showPatterns = true, height = 320 }) {
   const sl = data.slice(-count);
-  const W = 700, H = showPatterns ? 170 : 140;
-  const P = { t: 8, r: 48, b: showPatterns ? 28 : 14, l: 8 };
+  const W = 900, H = height;
+  const P = { t: 12, r: 60, b: showPatterns ? 36 : 18, l: 12 };
   const iw = W - P.l - P.r;
   const ih = H - P.t - P.b;
   const prices = sl.flatMap((d) => [d.h, d.l]);
@@ -68,14 +68,14 @@ export default function MiniChart({ data, count = 60, showPatterns = true }) {
   }, [sl, showPatterns]);
 
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", maxHeight: H }}>
+    <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", minHeight: 280 }}>
       {/* グリッドライン */}
       {[0, 0.5, 1].map((f) => {
         const v = mn + (mx - mn) * f;
         return (
           <g key={f}>
             <line x1={P.l} y1={y(v)} x2={W - P.r} y2={y(v)} stroke="#d0d8e0" strokeWidth="0.5" />
-            <text x={W - P.r + 4} y={y(v) + 4} fill={C.dim} fontSize="9" fontFamily="monospace">
+            <text x={W - P.r + 4} y={y(v) + 4} fill={C.dim} fontSize="13" fontFamily="monospace">
               {v.toFixed(v > 1000 ? 0 : 1)}
             </text>
           </g>
@@ -91,7 +91,7 @@ export default function MiniChart({ data, count = 60, showPatterns = true }) {
           <g key={`level-${i}`}>
             <line x1={P.l} y1={lineY} x2={W - P.r} y2={lineY}
               stroke={col} strokeWidth="1" strokeDasharray="4,3" />
-            <text x={P.l + 4} y={lineY - 3} fill={col} fontSize="7" fontFamily="monospace">
+            <text x={P.l + 4} y={lineY - 3} fill={col} fontSize="11" fontFamily="monospace">
               {lv.type === "resist" ? "抵抗" : "支持"} {lv.level.toFixed(lv.level > 1000 ? 0 : 1)}
             </text>
           </g>
@@ -126,10 +126,10 @@ export default function MiniChart({ data, count = 60, showPatterns = true }) {
         const arrow = bestPattern.signal === "buy" ? "▲" : bestPattern.signal === "sell" ? "▼" : "◆";
         return (
           <g key={`pat-${index}`}>
-            <text x={x(index)} y={markerY} fill={markerCol} fontSize="10" textAnchor="middle" fontWeight="bold">
+            <text x={x(index)} y={markerY} fill={markerCol} fontSize="14" textAnchor="middle" fontWeight="bold">
               {arrow}
             </text>
-            <text x={x(index)} y={markerY + (bestPattern.signal === "buy" ? 10 : -4)} fill={markerCol} fontSize="6" textAnchor="middle">
+            <text x={x(index)} y={markerY + (bestPattern.signal === "buy" ? 12 : -5)} fill={markerCol} fontSize="10" textAnchor="middle">
               {bestPattern.nameJa}
             </text>
           </g>

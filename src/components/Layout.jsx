@@ -27,13 +27,14 @@ export default function Layout({ left, header, main, right, footer }) {
 
       {/* 3カラム本体 */}
       <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
-        {/* 左サイドバー */}
+        {/* 左サイドバー（リサイズ可能） */}
         <div style={{
-          width: 220, flexShrink: 0,
+          width: 240, minWidth: 180, maxWidth: 400, flexShrink: 0,
           borderRight: `1px solid ${C.border}`,
           background: C.card,
-          overflowY: "auto",
+          overflowY: "auto", overflow: "auto",
           display: "flex", flexDirection: "column",
+          resize: "horizontal",
         }}>
           {left}
         </div>
@@ -41,21 +42,26 @@ export default function Layout({ left, header, main, right, footer }) {
         {/* メインエリア */}
         <div style={{
           flex: 1, overflowY: "auto",
-          padding: "16px 20px",
+          padding: "20px 24px",
           background: C.bg,
+          minWidth: 400,
         }}>
           {main}
         </div>
 
-        {/* 右サイドバー */}
+        {/* 右サイドバー（リサイズ可能） */}
         <div style={{
-          width: 260, flexShrink: 0,
+          width: 280, minWidth: 200, maxWidth: 400, flexShrink: 0,
           borderLeft: `1px solid ${C.border}`,
           background: C.card,
-          overflowY: "auto",
+          overflowY: "auto", overflow: "auto",
           padding: "16px",
+          resize: "horizontal",
+          direction: "rtl",
         }}>
-          {right}
+          <div style={{ direction: "ltr" }}>
+            {right}
+          </div>
         </div>
       </div>
 
